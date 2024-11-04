@@ -1,0 +1,7 @@
+{
+    "Plugin": {
+        "Version": "1.0",
+        "Id": "org.deepin.ds.greeter.ddmauth",
+        "Parent": "org.deepin.ds.greeter.auth"
+    }
+}
