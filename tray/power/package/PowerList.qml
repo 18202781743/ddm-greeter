@@ -18,36 +18,36 @@ D.Menu {
     }
 
     D.Action {
-        enabled: Panel.proxy.canHibernate
+        enabled: Applet.proxy.canHibernate
         text: qsTr("Hibernate")
         icon.name: "login_sleep"
 
-        onTriggered: Panel.proxy.hibernate()
+        onTriggered: Applet.proxy.hibernate()
     }
 
     D.Action {
-        enabled: Panel.proxy.canSuspend
+        enabled: Applet.proxy.canSuspend
         text: qsTr("Suspend")
         icon.name: "login_suspend"
 
-        onTriggered: Panel.proxy.suspend()
+        onTriggered: Applet.proxy.suspend()
     }
 
     D.Action {
-        enabled: Panel.proxy.canReboot
+        enabled: Applet.proxy.canReboot
         text: qsTr("Reboot")
         icon.name: "login_reboot"
 
-        onTriggered: Panel.proxy.reboot()
+        onTriggered: Applet.proxy.reboot()
     }
 
     D.Action {
         id: powerOff
-        enabled: Panel.proxy.canPowerOff
+        enabled: Applet.proxy.canPowerOff
         text: qsTr("Shut Down")
         icon.name: "login_poweroff"
 
-        onTriggered: Panel.proxy.powerOff()
+        onTriggered: Applet.proxy.powerOff()
     }
 
     onAboutToShow: {

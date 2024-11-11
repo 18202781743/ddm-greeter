@@ -94,12 +94,12 @@ void DAAuth::onLimitedInfoChanged(const QString &user)
 {
     if (user != m_user)
         return;
-    qDebug() << "DeepinAuthFramework::LimitsInfoChanged:" << user;
     updateLimitedInfo();
 }
 
 void DAAuth::updateLimitedInfo()
 {
+    qDebug() << "Update limits info";
     const auto info = m_impl->GetLimitedInfo(m_user);
     const QJsonDocument limitsInfoDoc = QJsonDocument::fromJson(info.toUtf8());
     const QJsonArray limitsInfoArr = limitsInfoDoc.array();

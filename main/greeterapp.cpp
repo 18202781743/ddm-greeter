@@ -3,6 +3,8 @@
 
 #include "greeterapp.h"
 #include "dbusfrontservice.h"
+#include "usermodel.h"
+#include "sessionmodel.h"
 
 #include <QLoggingCategory>
 
@@ -52,6 +54,13 @@ bool GreeterPanel::init()
         Q_ASSERT(containment);
         connect(containment, SIGNAL(loginFailed(const QString&)), this, SLOT(onLoginFailed(const QString &)));
         connect(containment, SIGNAL(loginSuccessed(const QString&)), this, SLOT(onLoginSuccessed(const QString &)));
+        connect(m_proxy->userModel(), &UserModel::currentUserNameChanged, this, [this] () {
+            DAppletBridge bridge("org.deepin.ds.greeter.auth");
+            if (auto applet = bridge.applet()) {
+                const auto userName = m_proxy->userModel()->currentUserName();
+                QMetaObject::invokeMethod(applet, "activateUser", Qt::DirectConnection, Q_ARG(QString, userName));
+            }
+        });
     }
 
     m_proxy->init();
@@ -115,12 +124,14 @@ bool GreeterPanel::authActive() const
 void GreeterPanel::onLoginFailed(const QString &user)
 {
     qDebug() << "Login failed:" << user;
+    m_authActive = false;
     m_proxy->onLoginFailed(user);
 }
 
 void GreeterPanel::onLoginSuccessed(const QString &user)
 {
     qDebug() << "Login successed:" << user;
+    m_authActive = false;
     m_proxy->onLoginSuccessed(user);
 }
 

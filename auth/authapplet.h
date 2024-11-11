@@ -19,6 +19,9 @@ public:
 
     virtual bool init() override;
 
+public slots:
+    void activateUser(const QString &user);
+
 signals:
     void loginFailed(const QString &user);
     void loginSuccessed(const QString &user);

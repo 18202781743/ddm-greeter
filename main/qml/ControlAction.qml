@@ -6,6 +6,7 @@ import QtQuick.Layouts
 import QtQuick.Controls
 import QtQuick.Effects
 import org.deepin.dtk 1.0 as D
+import org.deepin.ds
 import org.deepin.greeter
 
 RowLayout {
@@ -92,34 +93,24 @@ RowLayout {
     }
 
     Item {
-        implicitWidth: bottomGroup.buttonSize + 6
-        implicitHeight: bottomGroup.buttonSize + 6
+        id: powerBtn
+        implicitWidth: trayView.width
+        implicitHeight: trayView.height
         Layout.alignment: Qt.AlignHCenter
-        D.RoundButton {
-            id: powerBtn
 
-            property bool expand: false
-            icon.name: "login_power"
-            icon.width: 16
-            icon.height: 16
-            width: expand ? bottomGroup.buttonSize + 6 : bottomGroup.buttonSize
-            height: expand ? bottomGroup.buttonSize + 6 : bottomGroup.buttonSize
-            anchors.centerIn: parent
-            D.ToolTip.visible: hovered
-            D.ToolTip.text: qsTr("Power")
-            PowerList {
-                id: powerList
-                y: -powerList.height - 10
-                x: (powerBtn.width - powerList.width) / 2 - 10
-                onClosed: powerBtn.expand = false
-            }
-            onClicked: {
-                powerBtn.expand = true
-                powerList.open()
-            }
-
-            background: RoundBlur {
-                radius: powerBtn.width / 2
+        ListView {
+            id: trayView
+            height: 36
+            width: contentWidth
+            orientation: ListView.Horizontal
+            property var trayApplet: DS.applet("org.deepin.ds.greeter.tray")
+            model: trayApplet ? trayApplet.appletItems : null
+            delegate: Control {
+                id: trayItem
+                contentItem: model.data
+                background: RoundBlur {
+                    radius: trayItem.width / 2
+                }
             }
         }
     }

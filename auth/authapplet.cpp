@@ -36,6 +36,14 @@ bool AuthApplet::init()
     return DContainment::init();
 }
 
+void AuthApplet::activateUser(const QString &user)
+{
+    qDebug() << "Activate user" << user;
+    requestAuthentication(false);
+    AuthManager::instance()->setUser(user);
+    requestAuthentication(true);
+}
+
 void AuthApplet::requestAuthentication(bool active)
 {
     qDebug() << "Request auth" << active;

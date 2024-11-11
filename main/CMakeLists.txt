@@ -46,7 +46,6 @@ set(QML_FILES
     qml/UserView.qml
     qml/LoginAnimation.qml
     qml/RoundBlur.qml
-    qml/PowerList.qml
     qml/TimeDateWidget.qml
     qml/HintLabel.qml
     qml/QuickAction.qml

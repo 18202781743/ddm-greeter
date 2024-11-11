@@ -237,7 +237,6 @@ void GreeterProxy::activateUser(const QString &user)
     auto userInfo = userModel()->get(user);
     if (userInfo.isValid()) {
         userModel()->setCurrentUserName(user);
-        d->m_auth->activateUser(user);
     } else {
         qWarning(dmGreeter) << "Invalid user" << user;
     }

@@ -20,6 +20,10 @@ PasswordAuthApplet::PasswordAuthApplet(QObject *parent)
 bool PasswordAuthApplet::load()
 {
     std::unique_ptr<AuthInterface> auth(AuthManager::instance()->create(AuthInterface::AT_Password));
+    if (!auth) {
+        qWarning() << "Failed to create auth";
+        return false;
+    }
     if (!auth->init()) {
         return false;
     }
