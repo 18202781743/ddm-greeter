@@ -43,6 +43,7 @@ set(QML_FILES
     qml/UserList.qml
     qml/SessionList.qml
     qml/UserInput.qml
+    qml/UserView.qml
     qml/LoginAnimation.qml
     qml/RoundBlur.qml
     qml/PowerList.qml

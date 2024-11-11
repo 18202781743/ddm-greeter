@@ -49,6 +49,8 @@ public slots:
     void showAuth(bool active);
     void suspend(bool enable);
     void hibernate(bool enable);
+
+public slots:
     bool visible() const;
     bool authActive() const;
 signals:

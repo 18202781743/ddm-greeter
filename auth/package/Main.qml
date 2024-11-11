@@ -13,6 +13,7 @@ ContainmentItem {
 
     ColumnLayout {
         anchors.fill: parent
+        spacing: 0
         Rectangle {
             id: cover
             Layout.alignment:  Qt.AlignTop | Qt.AlignHCenter
@@ -40,31 +41,8 @@ ContainmentItem {
         }
 
         Item {
-            Layout.topMargin: 10
-            Layout.alignment:  Qt.AlignTop | Qt.AlignHCenter
-            Layout.preferredHeight: userIcon.height + userName.height + 10
-            Layout.preferredWidth: 100
-            DciIcon {
-                id: userIcon
-                width: 80
-                height: 80
-                sourceSize.width: 80
-                sourceSize.height: 80
-                name: {
-                    let currentUserName = Panel.proxy.userModel.currentUserName
-                    let user = Panel.proxy.userModel.get(currentUserName)
-                    return user ? user.icon : "uos-id"
-                }
-            }
-            Text {
-                id: userName
-                anchors {
-                    top: userIcon.bottom
-                    topMargin: 5
-                    horizontalCenter: userIcon.horizontalCenter
-                }
-                text: Panel.proxy.userModel.currentUserName
-            }
+            Layout.fillHeight: true
+            Layout.preferredWidth: 1
         }
 
         StackLayout {

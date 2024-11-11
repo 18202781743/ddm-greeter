@@ -142,9 +142,26 @@ FocusScope {
             leftMargin: rightComp.width / 5
         }
         focus: true
-        property var authApplet: DS.applet("org.deepin.ds.greeter.auth")
-        contentItem: authApplet ? authApplet.rootObject : null
+
+        contentItem: Item {
+            implicitWidth: authView.width
+            implicitHeight: authView.height
+            Control {
+                id: authView
+                anchors.horizontalCenter: parent.horizontalCenter
+                property var authApplet: DS.applet("org.deepin.ds.greeter.auth")
+                contentItem: authApplet ? authApplet.rootObject : null
+            }
+
+            UserView {
+                id: userView
+                anchors.top: parent.top
+                anchors.topMargin: 100
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
+        }
     }
+
 
     // UserInput {
     //     id: userInput

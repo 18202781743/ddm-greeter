@@ -30,10 +30,6 @@ GreeterPanel::GreeterPanel(QObject *parent)
 
 bool GreeterPanel::load()
 {
-    bool showUserList = false;
-    bool showShutdown = false;
-    bool showLockScreen = true;
-
     new DBusFrontService(this);
     QDBusConnection conn = QDBusConnection::sessionBus();
     if (!conn.registerService(DBUS_LOCK_NAME) || !conn.registerObject(DBUS_LOCK_PATH, this)) {
@@ -41,7 +37,6 @@ bool GreeterPanel::load()
         return false;
     }
     if (!conn.registerService(DBUS_SHUTDOWN_NAME) || !conn.registerObject(DBUS_SHUTDOWN_PATH, this)) {
-
         qDebug() << "register dbus failed"<< "maybe lockFront is running..." << conn.lastError();
         return false;
     }
@@ -60,6 +55,7 @@ bool GreeterPanel::init()
     }
 
     m_proxy->init();
+
     show();
 
     return DPanel::init();
