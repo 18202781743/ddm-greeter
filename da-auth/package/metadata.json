@@ -2,6 +2,6 @@
     "Plugin": {
         "Version": "1.0",
         "Id": "org.deepin.ds.greeter.daauth",
-        "Parent": "org.deepin.ds.greeter.auth"
+        "Parent": "org.deepin.ds.greeter.2auth"
     }
 }

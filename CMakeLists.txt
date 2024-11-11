@@ -50,7 +50,8 @@ target_link_libraries(ddm-greeter PRIVATE
 install(TARGETS ddm-greeter DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
 
 add_subdirectory(main)
+add_subdirectory(libauth)
 add_subdirectory(auth)
-add_subdirectory(ddm-auth)
+# add_subdirectory(ddm-auth)
 add_subdirectory(lock)
-add_subdirectory(da-auth)
+# add_subdirectory(da-auth)

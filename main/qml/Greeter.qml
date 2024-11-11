@@ -134,16 +134,28 @@ FocusScope {
         }
     }
 
-    UserInput {
+    Control {
         id: userInput
         anchors {
             verticalCenter: parent.verticalCenter
             left: rightComp.left
             leftMargin: rightComp.width / 5
         }
-
         focus: true
+        property var authApplet: DS.applet("org.deepin.ds.greeter.auth")
+        contentItem: authApplet ? authApplet.rootObject : null
     }
+
+    // UserInput {
+    //     id: userInput
+    //     anchors {
+    //         verticalCenter: parent.verticalCenter
+    //         left: rightComp.left
+    //         leftMargin: rightComp.width / 5
+    //     }
+
+    //     focus: true
+    // }
 
     ControlAction {
         id: controlAction
@@ -173,14 +185,14 @@ FocusScope {
         function onStateChanged() {
             switch (Panel.proxy.state) {
                 case Proxy.AuthSucceeded: {
-                    userInput.userAuthSuccessed()
-                    userInput.updateHintMsg(userInput.normalHint)
+                    // userInput.userAuthSuccessed()
+                    // userInput.updateHintMsg(userInput.normalHint)
                     Panel.proxy.quit()
                 }
                 break
                 case Proxy.AuthFailed: {
-                    userInput.userAuthFailed()
-                    userInput.updateHintMsg(qsTr("Password is incorrect."))
+                    // userInput.userAuthFailed()
+                    // userInput.updateHintMsg(qsTr("Password is incorrect."))
                 }
                 break
                 case Proxy.Quit: {

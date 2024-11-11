@@ -65,6 +65,8 @@ qt_add_qml_module(ds-greeter
     SOURCES
         greeterapp.cpp
         greeterapp.h
+        dbusfrontservice.cpp
+        dbusfrontservice.h
         ${GREETER_SOURCES}
         ${DDM_DBUS_SOURCES}
     QML_FILES ${QML_FILES}

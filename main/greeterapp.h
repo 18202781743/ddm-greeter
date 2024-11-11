@@ -55,6 +55,8 @@ signals:
 
 private slots:
     void updateTranslation();
+    void onLoginFailed(const QString &user);
+    void onLoginSuccessed(const QString &user);
 private:
     GreeterProxy *m_proxy = nullptr;
     bool m_visible = false;

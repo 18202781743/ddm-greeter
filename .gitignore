@@ -1,0 +1,12 @@
+# SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
+#
+# SPDX-License-Identifier: CC0-1.0
+
+.clang-format
+build*/
+*.txt.user
+.vscode/settings.json
+*.user
+.cache/
+obj-x86_64-linux-gnu/
+*.autosave
