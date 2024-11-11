@@ -8,7 +8,7 @@
 #include <QObject>
 #include <QHash>
 
-class QGSettings;
+// class QGSettings;
 class GSettingWatcher : public QObject
 {
     Q_OBJECT
@@ -31,7 +31,7 @@ private:
 
 private:
     QMultiHash<QString, QWidget *> m_map;
-    QGSettings *m_gsettings;
+    // QGSettings *m_gsettings;
 };
 
 #endif // GSETTINGWATCHER_H

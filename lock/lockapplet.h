@@ -7,6 +7,11 @@
 #include "appletproxy.h"
 #include <applet.h>
 
+#include "lockworker.h"
+#include "sessionbasemodel.h"
+#include "dbuslockagent.h"
+#include "dbusshutdownagent.h"
+
 DS_USE_NAMESPACE
 
 class LockApplet : public DApplet
@@ -33,6 +38,16 @@ Q_SIGNALS:
     void ChangKey(QString key);
     void Visible(bool visible);
 
+private slots:
+    void onFrameChanged();
+
+private:
+   QObject *frame() const;
+
 private:
     DAppletProxy *greeterProxy() const;
+    LockWorker *m_worker{ nullptr };
+    SessionBaseModel *m_sessionModel{ nullptr };
+    DBusLockAgent *m_lockAgent{ nullptr };
+    DBusShutdownAgent *m_shutdownAgent{ nullptr };
 };

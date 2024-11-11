@@ -5,7 +5,7 @@
 #ifndef LOCKFRAME
 #define LOCKFRAME
 
-#include "fullscreenbackground.h"
+// #include "fullscreenbackground.h"
 #include "sessionbasemodel.h"
 
 #include <QKeyEvent>
@@ -25,11 +25,11 @@ class DBusLockService;
 class LockContent;
 class WarningContent;
 class User;
-class LockFrame: public FullscreenBackground
+class LockFrame: public QObject
 {
     Q_OBJECT
 public:
-    LockFrame(SessionBaseModel *const model, QWidget *parent = nullptr);
+    LockFrame(SessionBaseModel *const model, QObject *parent = nullptr);
 
 signals:
     void requestSwitchToUser(std::shared_ptr<User> user);
@@ -51,11 +51,11 @@ public slots:
     void cancelShutdownInhibit(bool hideFrame);
 
 protected:
-    void keyPressEvent(QKeyEvent *e) Q_DECL_OVERRIDE;
-    void showEvent(QShowEvent *event) Q_DECL_OVERRIDE;
-    void hideEvent(QHideEvent *event) Q_DECL_OVERRIDE;
-    bool event(QEvent *event) Q_DECL_OVERRIDE;
-    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
+    // void keyPressEvent(QKeyEvent *e) Q_DECL_OVERRIDE;
+    // void showEvent(QShowEvent *event) Q_DECL_OVERRIDE;
+    // void hideEvent(QHideEvent *event) Q_DECL_OVERRIDE;
+    // bool event(QEvent *event) Q_DECL_OVERRIDE;
+    // void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
 
 private:
     bool handlePoweroffKey();
@@ -63,7 +63,7 @@ private:
 private:
     SessionBaseModel *m_model;
     LockContent *m_lockContent;
-    WarningContent *m_warningContent;
+    // WarningContent *m_warningContent;
     bool m_enablePowerOffKey;
     QTimer *m_autoExitTimer;
 };

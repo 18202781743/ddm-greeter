@@ -7,13 +7,13 @@
 
 #include "auth_module.h"
 
-#include <DIconButton>
-#include <DLabel>
-#include <DLineEdit>
-#include <DPushButton>
-#include <DFloatingMessage>
-#include <DSuggestButton>
-#include <DMessageManager>
+// #include <DIconButton>
+// #include <DLabel>
+// #include <DLineEdit>
+// #include <DPushButton>
+// #include <DFloatingMessage>
+// #include <DSuggestButton>
+// #include <DMessageManager>
 
 #define Password_Auth QStringLiteral(":/misc/images/auth/password.svg")
 //const QString Password_Auth = ":/misc/images/auth/password.svg";
@@ -54,7 +54,7 @@ public slots:
 
 protected:
     bool eventFilter(QObject *watched, QEvent *event) override;
-    void hideEvent(QHideEvent *event) override;
+    // void hideEvent(QHideEvent *event) override;
 
 private:
     void initUI();
@@ -67,15 +67,15 @@ private:
     bool isUserAccountBinded();
 
 private:
-    DLabel *m_capsLock;                 // 大小写状态
-    DLineEditEx *m_passwordEdit;        // 密码输入框
-    DIconButton *m_passwordHintBtn;     // 密码提示按钮
-    QString m_passwordHint;             // 密码提示
-    DIconButton *m_togglePasswordBtn;   // 显示/隐藏密码按钮
+    // DLabel *m_capsLock;                 // 大小写状态
+    // DLineEditEx *m_passwordEdit;        // 密码输入框
+    // DIconButton *m_passwordHintBtn;     // 密码提示按钮
+    // QString m_passwordHint;             // 密码提示
+    // DIconButton *m_togglePasswordBtn;   // 显示/隐藏密码按钮
     bool m_resetPasswordMessageVisible;
-    DFloatingMessage *m_resetPasswordFloatingMessage;
+    // DFloatingMessage *m_resetPasswordFloatingMessage;
     uid_t m_currentUid; // 当前用户uid
-    QTimer *m_bindCheckTimer;
+    // QTimer *m_bindCheckTimer;
 };
 
 #endif // AUTHPASSWORD_H

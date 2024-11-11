@@ -1,0 +1,8 @@
+{
+    "Plugin": {
+        "Version": "1.0",
+        "Id": "org.deepin.ds.greeter.passwordauth",
+        "Parent": "org.deepin.ds.greeter.auth",
+        "Url": "Main.qml"
+    }
+}

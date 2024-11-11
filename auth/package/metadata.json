@@ -3,6 +3,7 @@
         "Version": "1.0",
         "Id": "org.deepin.ds.greeter.auth",
         "Parent": "org.deepin.ds.greeter",
+        "Url": "Main.qml",
         "ContainmentType": "Containment"
     }
 }

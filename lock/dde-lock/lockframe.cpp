@@ -4,81 +4,81 @@
 
 #include "lockframe.h"
 
-#include "lockcontent.h"
+// #include "lockcontent.h"
 #include "sessionbasemodel.h"
-#include "userinfo.h"
-#include "warningcontent.h"
+// #include "userinfo.h"
+// #include "warningcontent.h"
 #include "public_func.h"
 
 #include <DDBusSender>
 
 #include <QApplication>
 #include <QDBusInterface>
-#include <QGSettings>
+// #include <QGSettings>
 #include <QScreen>
 #include <QWindow>
-#include <QX11Info>
+// #include <QX11Info>
 
 #define LOCK_START_EFFECT 16 // 锁屏动效比较特殊，窗管根据这个动效值进行处理
 
-xcb_atom_t internAtom(xcb_connection_t *connection, const char *name, bool only_if_exists)
-{
-    if (!name || *name == 0)
-        return XCB_NONE;
+// xcb_atom_t internAtom(xcb_connection_t *connection, const char *name, bool only_if_exists)
+// {
+//     if (!name || *name == 0)
+//         return XCB_NONE;
 
-    xcb_intern_atom_cookie_t cookie = xcb_intern_atom(connection, only_if_exists, static_cast<uint16_t>(strlen(name)), name);
-    xcb_intern_atom_reply_t *reply = xcb_intern_atom_reply(connection, cookie, nullptr);
+//     xcb_intern_atom_cookie_t cookie = xcb_intern_atom(connection, only_if_exists, static_cast<uint16_t>(strlen(name)), name);
+//     xcb_intern_atom_reply_t *reply = xcb_intern_atom_reply(connection, cookie, nullptr);
 
-    if (!reply)
-        return XCB_NONE;
+//     if (!reply)
+//         return XCB_NONE;
 
-    xcb_atom_t atom = reply->atom;
-    free(reply);
+//     xcb_atom_t atom = reply->atom;
+//     free(reply);
 
-    return atom;
-}
+//     return atom;
+// }
 
-LockFrame::LockFrame(SessionBaseModel *const model, QWidget *parent)
-    : FullscreenBackground(model, parent)
+LockFrame::LockFrame(SessionBaseModel *const model, QObject *parent)
+    : QObject(parent)
     , m_model(model)
-    , m_lockContent(new LockContent(model))
-    , m_warningContent(nullptr)
+    // , m_lockContent(new LockContent(model))
+    // , m_warningContent(nullptr)
     , m_enablePowerOffKey(false)
     , m_autoExitTimer(nullptr)
 {
-    xcb_connection_t *connection = QX11Info::connection();
-    if (connection) {
-        xcb_atom_t cook = internAtom(connection, "_DEEPIN_LOCK_SCREEN", false);
-        xcb_change_property(connection, XCB_PROP_MODE_REPLACE, static_cast<xcb_window_t>(winId()),
-                            cook, XCB_ATOM_ATOM, 32, 1, &cook);
+    // xcb_connection_t *connection = QX11Info::connection();
+    // if (connection) {
+    //     xcb_atom_t cook = internAtom(connection, "_DEEPIN_LOCK_SCREEN", false);
+    //     xcb_change_property(connection, XCB_PROP_MODE_REPLACE, static_cast<xcb_window_t>(winId()),
+    //                         cook, XCB_ATOM_ATOM, 32, 1, &cook);
 
-        // x11下通过窗口属性设置锁屏启动动效
-        xcb_atom_t startup = internAtom(connection, "_DEEPIN_NET_STARTUP", false);
-        quint32 value = LOCK_START_EFFECT;
-        xcb_change_property(connection, XCB_PROP_MODE_REPLACE, static_cast<xcb_window_t>(winId()),
-                            startup, XCB_ATOM_CARDINAL, 32, 1, &value);
-    }
+    //     // x11下通过窗口属性设置锁屏启动动效
+    //     xcb_atom_t startup = internAtom(connection, "_DEEPIN_NET_STARTUP", false);
+    //     quint32 value = LOCK_START_EFFECT;
+    //     xcb_change_property(connection, XCB_PROP_MODE_REPLACE, static_cast<xcb_window_t>(winId()),
+    //                         startup, XCB_ATOM_CARDINAL, 32, 1, &value);
+    // }
 
-    updateBackground(m_model->currentUser()->greeterBackground());
+    // updateBackground(m_model->currentUser()->greeterBackground());
 
-    setAccessibleName("LockFrame");
-    m_lockContent->setAccessibleName("LockContent");
-    m_lockContent->hide();
-    setContent(m_lockContent);
+    // setAccessibleName("LockFrame");
+    // m_lockContent->setAccessibleName("LockContent");
+    // m_lockContent->hide();
+    // setContent(m_lockContent);
 
-    connect(m_lockContent, &LockContent::requestSwitchToUser, this, &LockFrame::requestSwitchToUser);
-    connect(m_lockContent, &LockContent::requestSetKeyboardLayout, this, &LockFrame::requestSetKeyboardLayout);
-    connect(m_lockContent, &LockContent::requestBackground, this, static_cast<void (LockFrame::*)(const QString &)>(&LockFrame::updateBackground));
-    connect(m_lockContent, &LockContent::requestStartAuthentication, this, &LockFrame::requestStartAuthentication);
-    connect(m_lockContent, &LockContent::sendTokenToAuth, this, &LockFrame::sendTokenToAuth);
-    connect(m_lockContent, &LockContent::requestEndAuthentication, this, &LockFrame::requestEndAuthentication);
-    connect(m_lockContent, &LockContent::requestLockFrameHide, this, &LockFrame::hide);
-    connect(m_lockContent, &LockContent::authFinished, this, [this] {
-        hide();
-        emit requestEnableHotzone(true);
-        emit authFinished();
-    });
-    connect(m_lockContent, &LockContent::requestCheckAccount, this, &LockFrame::requestCheckAccount);
+    // connect(m_lockContent, &LockContent::requestSwitchToUser, this, &LockFrame::requestSwitchToUser);
+    // connect(m_lockContent, &LockContent::requestSetKeyboardLayout, this, &LockFrame::requestSetKeyboardLayout);
+    // connect(m_lockContent, &LockContent::requestBackground, this, static_cast<void (LockFrame::*)(const QString &)>(&LockFrame::updateBackground));
+    // connect(m_lockContent, &LockContent::requestStartAuthentication, this, &LockFrame::requestStartAuthentication);
+    // connect(m_lockContent, &LockContent::sendTokenToAuth, this, &LockFrame::sendTokenToAuth);
+    // connect(m_lockContent, &LockContent::requestEndAuthentication, this, &LockFrame::requestEndAuthentication);
+    // connect(m_lockContent, &LockContent::requestLockFrameHide, this, &LockFrame::hide);
+    // connect(m_lockContent, &LockContent::authFinished, this, [this] {
+    //     hide();
+    //     emit requestEnableHotzone(true);
+    //     emit authFinished();
+    // });
+    // connect(m_lockContent, &LockContent::requestCheckAccount, this, &LockFrame::requestCheckAccount);
     connect(model, &SessionBaseModel::showUserList, this, &LockFrame::showUserList);
     connect(model, &SessionBaseModel::showLockScreen, this, &LockFrame::showLockScreen);
     connect(model, &SessionBaseModel::showShutdown, this, &LockFrame::showShutdown);
@@ -100,20 +100,20 @@ LockFrame::LockFrame(SessionBaseModel *const model, QWidget *parent)
         model->setVisible(true);
 
         if (!isSleep) {
-            //待机唤醒后检查是否需要密码，若不需要密码直接隐藏锁定界面
-            if (QGSettings::isSchemaInstalled("com.deepin.dde.power")) {
-                QGSettings powerSettings("com.deepin.dde.power", QByteArray(), this);
-                if (!powerSettings.get("sleep-lock").toBool()) {
-                    hide();
-                }
-            }
+            // //待机唤醒后检查是否需要密码，若不需要密码直接隐藏锁定界面
+            // if (QGSettings::isSchemaInstalled("com.deepin.dde.power")) {
+            //     QGSettings powerSettings("com.deepin.dde.power", QByteArray(), this);
+            //     if (!powerSettings.get("sleep-lock").toBool()) {
+            //         hide();
+            //     }
+            // }
         }
     } );
 
     connect(model, &SessionBaseModel::authFinished, this, [this](bool success) {
         if (success) {
             Q_EMIT requestEnableHotzone(true);
-            hide();
+            // hide();
         }
     });
 
@@ -130,71 +130,71 @@ LockFrame::LockFrame(SessionBaseModel *const model, QWidget *parent)
     }
 }
 
-bool LockFrame::event(QEvent *event)
-{
-    if (event->type() == QEvent::KeyRelease) {
-        QString  keyValue = "";
-        switch (static_cast<QKeyEvent *>(event)->key()) {
-        case Qt::Key_PowerOff: {
-            if (!handlePoweroffKey()) {
-                keyValue = "power-off";
-            }
-            break;
-        }
-        case Qt::Key_NumLock: {
-            keyValue = "numlock";
-            break;
-        }
-        case Qt::Key_TouchpadOn: {
-            keyValue = "touchpad-on";
-            break;
-        }
-        case Qt::Key_TouchpadOff: {
-            keyValue = "touchpad-off";
-            break;
-        }
-        case Qt::Key_TouchpadToggle: {
-            keyValue = "touchpad-toggle";
-            break;
-        }
-        case Qt::Key_CapsLock: {
-            keyValue = "capslock";
-            break;
-        }
-        case Qt::Key_VolumeDown: {
-            keyValue = "audio-lower-volume";
-            break;
-        }
-        case Qt::Key_VolumeUp: {
-            keyValue = "audio-raise-volume";
-            break;
-        }
-        case Qt::Key_VolumeMute: {
-            keyValue = "audio-mute";
-            break;
-        }
-        case Qt::Key_MonBrightnessUp: {
-            keyValue = "mon-brightness-up";
-            break;
-        }
-        case Qt::Key_MonBrightnessDown: {
-            keyValue = "mon-brightness-down";
-            break;
-        }
-        }
+// bool LockFrame::event(QEvent *event)
+// {
+//     if (event->type() == QEvent::KeyRelease) {
+//         QString  keyValue = "";
+//         switch (static_cast<QKeyEvent *>(event)->key()) {
+//         case Qt::Key_PowerOff: {
+//             if (!handlePoweroffKey()) {
+//                 keyValue = "power-off";
+//             }
+//             break;
+//         }
+//         case Qt::Key_NumLock: {
+//             keyValue = "numlock";
+//             break;
+//         }
+//         case Qt::Key_TouchpadOn: {
+//             keyValue = "touchpad-on";
+//             break;
+//         }
+//         case Qt::Key_TouchpadOff: {
+//             keyValue = "touchpad-off";
+//             break;
+//         }
+//         case Qt::Key_TouchpadToggle: {
+//             keyValue = "touchpad-toggle";
+//             break;
+//         }
+//         case Qt::Key_CapsLock: {
+//             keyValue = "capslock";
+//             break;
+//         }
+//         case Qt::Key_VolumeDown: {
+//             keyValue = "audio-lower-volume";
+//             break;
+//         }
+//         case Qt::Key_VolumeUp: {
+//             keyValue = "audio-raise-volume";
+//             break;
+//         }
+//         case Qt::Key_VolumeMute: {
+//             keyValue = "audio-mute";
+//             break;
+//         }
+//         case Qt::Key_MonBrightnessUp: {
+//             keyValue = "mon-brightness-up";
+//             break;
+//         }
+//         case Qt::Key_MonBrightnessDown: {
+//             keyValue = "mon-brightness-down";
+//             break;
+//         }
+//         }
 
-        if (keyValue != "") {
-            emit sendKeyValue(keyValue);
-        }
-    }
-    return FullscreenBackground::event(event);
-}
+//         if (keyValue != "") {
+//             emit sendKeyValue(keyValue);
+//         }
+//     }
+//     return FullscreenBackground::event(event);
+// }
 
-void LockFrame::resizeEvent(QResizeEvent *event)
-{
-    m_lockContent->resize(size());
-    FullscreenBackground::resizeEvent(event);
-}
+// void LockFrame::resizeEvent(QResizeEvent *event)
+// {
+//     // m_lockContent->resize(size());
+//     FullscreenBackground::resizeEvent(event);
+// }
 
 bool LockFrame::handlePoweroffKey()
 {
@@ -230,66 +230,66 @@ bool LockFrame::handlePoweroffKey()
 void LockFrame::showUserList()
 {
     m_model->setCurrentModeState(SessionBaseModel::ModeStatus::UserMode);
-    QTimer::singleShot(10, this, [ = ] {
-        this->show();
-    });
+    // QTimer::singleShot(10, this, [ = ] {
+    //     this->show();
+    // });
 }
 
 void LockFrame::showLockScreen()
 {
     m_model->setCurrentModeState(SessionBaseModel::ModeStatus::PasswordMode);
-    show();
+    // show();
 }
 
 void LockFrame::showShutdown()
 {
     m_model->setCurrentModeState(SessionBaseModel::ModeStatus::ShutDownMode);
-    show();
+    // show();
 }
 
 void LockFrame::shutdownInhibit(const SessionBaseModel::PowerAction action, bool needConfirm)
 {
-    //如果其他显示屏界面已经检查过是否允许关机，此显示屏上的界面不再显示，避免重复检查并触发信号
-    if (m_model->isCheckedInhibit()) return;
-    //记录多屏状态下当前显示屏是否显示内容
-    bool old_visible = contentVisible();
+    // //如果其他显示屏界面已经检查过是否允许关机，此显示屏上的界面不再显示，避免重复检查并触发信号
+    // if (m_model->isCheckedInhibit()) return;
+    // //记录多屏状态下当前显示屏是否显示内容
+    // bool old_visible = contentVisible();
 
-    if (!m_warningContent) {
-        m_warningContent = new WarningContent(m_model, action, this);
-        m_warningContent->setAccessibleName("WarningContent");
-    } else {
-        m_warningContent->setPowerAction(action);
-    }
-    m_warningContent->resize(size());
-    setContent(m_warningContent);
+    // if (!m_warningContent) {
+    //     m_warningContent = new WarningContent(m_model, action, this);
+    //     m_warningContent->setAccessibleName("WarningContent");
+    // } else {
+    //     m_warningContent->setPowerAction(action);
+    // }
+    // m_warningContent->resize(size());
+    // setContent(m_warningContent);
 
-    //多屏状态下，当前界面显示内容时才显示提示界面
-    if (old_visible) {
-        setContentVisible(true);
-        m_lockContent->hide();
-    }
+    // //多屏状态下，当前界面显示内容时才显示提示界面
+    // if (old_visible) {
+    //     setContentVisible(true);
+    //     m_lockContent->hide();
+    // }
 
-    //检查是否允许关机
-    m_warningContent->beforeInvokeAction(needConfirm);
+    // //检查是否允许关机
+    // m_warningContent->beforeInvokeAction(needConfirm);
 }
 
 void LockFrame::cancelShutdownInhibit(bool hideFrame)
 {
     //允许关机检查结束后切换界面
     //记录多屏状态下当前显示屏是否显示内容
-    bool old_visible = contentVisible();
+    // bool old_visible = contentVisible();
 
-    setContent(m_lockContent);
+    // setContent(m_lockContent);
 
-    //隐藏提示界面
-    if (m_warningContent) {
-        m_warningContent->hide();
-    }
+    // //隐藏提示界面
+    // if (m_warningContent) {
+    //     m_warningContent->hide();
+    // }
 
     //多屏状态下，当前界面显示内容时才显示
-    if (old_visible) {
-        setContentVisible(true);
-    }
+    // if (old_visible) {
+    //     setContentVisible(true);
+    // }
 
     if (hideFrame) {
         m_model->setVisible(false);
@@ -297,33 +297,33 @@ void LockFrame::cancelShutdownInhibit(bool hideFrame)
     }
 }
 
-void LockFrame::keyPressEvent(QKeyEvent *e)
-{
-    switch (e->key()) {
-#ifdef QT_DEBUG
-    case Qt::Key_Escape:    qApp->quit();       break;
-#endif
-    }
-}
+// void LockFrame::keyPressEvent(QKeyEvent *e)
+// {
+//     switch (e->key()) {
+// #ifdef QT_DEBUG
+//     case Qt::Key_Escape:    qApp->quit();       break;
+// #endif
+//     }
+// }
 
-void LockFrame::showEvent(QShowEvent *event)
-{
-    emit requestEnableHotzone(false);
+// void LockFrame::showEvent(QShowEvent *event)
+// {
+//     emit requestEnableHotzone(false);
 
-    m_model->setVisible(true);
-    if (m_autoExitTimer)
-        m_autoExitTimer->stop();
+//     m_model->setVisible(true);
+//     if (m_autoExitTimer)
+//         m_autoExitTimer->stop();
 
-    return FullscreenBackground::showEvent(event);
-}
+//     return FullscreenBackground::showEvent(event);
+// }
 
-void LockFrame::hideEvent(QHideEvent *event)
-{
-    emit requestEnableHotzone(true);
+// void LockFrame::hideEvent(QHideEvent *event)
+// {
+//     emit requestEnableHotzone(true);
 
-    m_model->setVisible(false);
-    if (m_autoExitTimer)
-        m_autoExitTimer->start();
+//     m_model->setVisible(false);
+//     if (m_autoExitTimer)
+//         m_autoExitTimer->start();
 
-    return FullscreenBackground::hideEvent(event);
-}
+//     return FullscreenBackground::hideEvent(event);
+// }

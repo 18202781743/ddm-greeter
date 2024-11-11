@@ -34,7 +34,7 @@ LockWorker::LockWorker(SessionBaseModel *const model, QObject *parent)
     , m_lockInter(new DBusLockService("org.deepin.dde.LockService1", "/org/deepin/dde/LockService1", QDBusConnection::systemBus(), this))
     , m_hotZoneInter(new DBusHotzone("org.deepin.dde.Zone1", "/org/deepin/dde/Zone1", QDBusConnection::sessionBus(), this))
     , m_sessionManagerInter(new SessionManagerInter("org.deepin.dde.SessionManager1", "/org/deepin/dde/SessionManager1", QDBusConnection::sessionBus(), this))
-    , m_switchosInterface(new HuaWeiSwitchOSInterface("com.huawei", "/com/huawei/switchos", QDBusConnection::sessionBus(), this))
+    // , m_switchosInterface(new HuaWeiSwitchOSInterface("com.huawei", "/com/huawei/switchos", QDBusConnection::sessionBus(), this))
     , m_resetSessionTimer(new QTimer(this))
     , m_limitsUpdateTimer(new QTimer(this))
     , m_kglobalaccelInter(nullptr)
@@ -49,14 +49,14 @@ LockWorker::LockWorker(SessionBaseModel *const model, QObject *parent)
 
     m_resetSessionTimer->setInterval(15000);
 
-    if (QGSettings::isSchemaInstalled("com.deepin.dde.session-shell")) {
-        m_gsettings = new QGSettings("com.deepin.dde.session-shell", "/com/deepin/dde/session-shell/", this);
-        if(m_gsettings->keys().contains("authResetTime")){
-            int resetTime = m_gsettings->get("auth-reset-time").toInt();
-            if(resetTime > 0)
-               m_resetSessionTimer->setInterval(resetTime);
-        }
-    }
+    // if (QGSettings::isSchemaInstalled("com.deepin.dde.session-shell")) {
+    //     m_gsettings = new QGSettings("com.deepin.dde.session-shell", "/com/deepin/dde/session-shell/", this);
+    //     if(m_gsettings->keys().contains("authResetTime")){
+    //         int resetTime = m_gsettings->get("auth-reset-time").toInt();
+    //         if(resetTime > 0)
+    //            m_resetSessionTimer->setInterval(resetTime);
+    //     }
+    // }
 
     m_resetSessionTimer->setSingleShot(true);
     connect(m_resetSessionTimer, &QTimer::timeout, this, [ = ] {
@@ -383,10 +383,10 @@ void LockWorker::doPowerAction(const SessionBaseModel::PowerAction action)
         m_model->setIsBlackMode(true);
         m_model->setCurrentModeState(SessionBaseModel::ModeStatus::PasswordMode);
         int delayTime = 500;
-        if(m_gsettings && m_gsettings->keys().contains("delaytime")){
-            delayTime = m_gsettings->get("delaytime").toInt();
-            qInfo() << "delayTime : " << delayTime;
-        }
+        // if(m_gsettings && m_gsettings->keys().contains("delaytime")){
+        //     delayTime = m_gsettings->get("delaytime").toInt();
+        //     qInfo() << "delayTime : " << delayTime;
+        // }
         if (delayTime < 0) {
             delayTime = 500;
         }
@@ -400,10 +400,10 @@ void LockWorker::doPowerAction(const SessionBaseModel::PowerAction action)
         m_model->setIsBlackMode(true);
         m_model->setCurrentModeState(SessionBaseModel::ModeStatus::PasswordMode);
         int delayTime = 500;
-        if(m_gsettings && m_gsettings->keys().contains("delaytime")){
-            delayTime = m_gsettings->get("delaytime").toInt();
-            qInfo() << " delayTime : " << delayTime;
-        }
+        // if(m_gsettings && m_gsettings->keys().contains("delaytime")){
+        //     delayTime = m_gsettings->get("delaytime").toInt();
+        //     qInfo() << " delayTime : " << delayTime;
+        // }
         if (delayTime < 0) {
             delayTime = 500;
         }
@@ -436,7 +436,7 @@ void LockWorker::doPowerAction(const SessionBaseModel::PowerAction action)
         m_sessionManagerInter->RequestLogout();
         return;
     case SessionBaseModel::PowerAction::RequireSwitchSystem:
-        m_switchosInterface->setOsFlag(!m_switchosInterface->getOsFlag());
+        // m_switchosInterface->setOsFlag(!m_switchosInterface->getOsFlag());
         QTimer::singleShot(200, this, [ = ] { m_sessionManagerInter->RequestReboot(); });
         break;
     case SessionBaseModel::PowerAction::RequireSwitchUser:

@@ -11,7 +11,7 @@
 #include "dbuslogin1manager.h"
 #include "deepinauthframework.h"
 #include "sessionbasemodel.h"
-#include "huaweiswitchos_interface.h"
+// #include "huaweiswitchos_interface.h"
 #include "userinfo.h"
 
 #include "accounts_interface.h"
@@ -26,7 +26,7 @@ using AccountsInter = org::deepin::dde::Accounts1;
 using UserInter = org::deepin::dde::accounts1::User;
 using LoginedInter = org::deepin::dde::Logined;
 using SessionManagerInter = org::deepin::dde::SessionManager1;
-using HuaWeiSwitchOSInterface = com::huawei::switchos;
+// using HuaWeiSwitchOSInterface = com::huawei::switchos;
 
 class SessionBaseModel;
 class LockWorker : public Auth::AuthInterface
@@ -58,6 +58,8 @@ public slots:
 
     void checkAccount(const QString &account);
 
+private slots:
+
 private:
     void initConnections();
     void initData();
@@ -78,7 +80,7 @@ private:
     DBusLockService *m_lockInter;
     DBusHotzone *m_hotZoneInter;
     SessionManagerInter *m_sessionManagerInter;
-    HuaWeiSwitchOSInterface *m_switchosInterface;
+    // HuaWeiSwitchOSInterface *m_switchosInterface;
 
     QMap<std::shared_ptr<User>, bool> m_lockUser;
     QTimer *m_resetSessionTimer;

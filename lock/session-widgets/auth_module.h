@@ -10,7 +10,6 @@
 
 #include <DLabel>
 
-#include <QWidget>
 #include <QDebug>
 #include <QPointer>
 
@@ -50,7 +49,7 @@ struct LimitsInfo {
 #endif
 };
 
-class AuthModule : public QWidget
+class AuthModule : public QObject
 {
     Q_OBJECT
 public:
@@ -61,7 +60,7 @@ public:
     };
     Q_ENUM(TextType)
 
-    explicit AuthModule(const AuthCommon::AuthType type, QWidget *parent = nullptr);
+    explicit AuthModule(const AuthCommon::AuthType type, QObject *parent = nullptr);
     ~AuthModule() override;
 
     inline int authType() const { return m_type; }
@@ -73,10 +72,12 @@ public:
     virtual void setLimitsInfo(const LimitsInfo &info);
     void setShowAuthState(bool showAuthState);
     void setAuthStatueVisible(bool visible);
-    void setAuthStateLabel(DLabel *label);
+    // void setAuthStateLabel(DLabel *label);
     virtual void setAuthFactorType(AuthFactorType authFactorType);
     inline bool isMFA() const { return m_authFactorType == DDESESSIONCC::MultiAuthFactor; }
     bool isLocked() const;
+
+    bool isVisible() const;
 
 signals:
     void activeAuth(const int);
@@ -98,7 +99,7 @@ protected:
     bool m_showPrompt;        // 是否显示默认提示文案
     uint m_integerMinutes;    // 认证剩余解锁的整数分钟
     LimitsInfo *m_limitsInfo; // 认证限制相关信息
-    QPointer<DLabel> m_authStateLabel; // 认证状态图标
+    // QPointer<DLabel> m_authStateLabel; // 认证状态图标
     QTimer *m_aniTimer;       // 动画执行定时器
     QTimer *m_unlockTimer;    // 认证解锁定时器
     bool m_showAuthState;     // 是否显示认证状态

@@ -7,7 +7,7 @@
 #include <DSysInfo>
 
 #include <QDebug>
-#include <QGSettings>
+// #include <QGSettings>
 
 #define SessionManagerService "org.deepin.dde.SessionManager1"
 #define SessionManagerPath "/org/deepin/dde/SessionManager1"
@@ -441,7 +441,8 @@ void SessionBaseModel::updateLastLogoutUser(const uid_t uid)
         return user->uid() == uid;
     });
     if (it != userList.end()) {
-        updateLastLogoutUser(it.i->t());
+        updateLastLogoutUser((*it)->uid());
+        // updateLastLogoutUser(it.i->t());
     }
 }
 

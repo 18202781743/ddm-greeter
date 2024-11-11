@@ -19,8 +19,8 @@ void LimitsInfo::operator=(const LimitsInfo &info)
     unlockTime = info.unlockTime;
 }
 
-AuthModule::AuthModule(const AuthCommon::AuthType type, QWidget *parent)
-    : QWidget(parent)
+AuthModule::AuthModule(const AuthCommon::AuthType type, QObject *parent)
+    : QObject(parent)
     , m_inputType(AuthCommon::IT_Default)
     , m_state(AuthCommon::AS_None)
     , m_type(type)
@@ -33,7 +33,7 @@ AuthModule::AuthModule(const AuthCommon::AuthType type, QWidget *parent)
     , m_isAuthing(false)
     , m_authFactorType(DDESESSIONCC::SingleAuthFactor)
 {
-    setMinimumHeight(37);
+    // setMinimumHeight(37);
 
     m_limitsInfo->locked = false;
     m_limitsInfo->maxTries = 0;
@@ -99,12 +99,12 @@ void AuthModule::setAuthState(const int state, const QString &result)
  */
 void AuthModule::setAuthStateStyle(const QString &path)
 {
-    if (!m_authStateLabel)
-        return;
+    // if (!m_authStateLabel)
+    //     return;
 
-    QPixmap pixmap = DHiDPIHelper::loadNxPixmap(path);
-    pixmap.setDevicePixelRatio(devicePixelRatioF());
-    m_authStateLabel->setPixmap(pixmap);
+    // QPixmap pixmap = DHiDPIHelper::loadNxPixmap(path);
+    // pixmap.setDevicePixelRatio(devicePixelRatioF());
+    // m_authStateLabel->setPixmap(pixmap);
 }
 
 /**
@@ -125,8 +125,8 @@ void AuthModule::setShowAuthState(bool showAuthState)
 
 void AuthModule::setAuthStatueVisible(bool visible)
 {
-    if (m_authStateLabel)
-        m_authStateLabel->setVisible(visible);
+    // if (m_authStateLabel)
+    //     m_authStateLabel->setVisible(visible);
 }
 
 /**
@@ -157,28 +157,28 @@ void AuthModule::updateUnlockTime()
 void AuthModule::updateIntegerMinutes()
 {
     if (QDateTime::fromString(m_limitsInfo->unlockTime, Qt::ISODateWithMs) > QDateTime::currentDateTime()) {
-        qreal intervalSeconds = QDateTime::fromString(m_limitsInfo->unlockTime, Qt::ISODateWithMs).toLocalTime().toTime_t()
-                               - QDateTime::currentDateTimeUtc().toTime_t();
+        qreal intervalSeconds = QDateTime::fromString(m_limitsInfo->unlockTime, Qt::ISODateWithMs).toLocalTime().toMSecsSinceEpoch()
+                               - QDateTime::currentDateTimeUtc().toMSecsSinceEpoch();
         m_integerMinutes = static_cast<uint>(qCeil(intervalSeconds / 60));
     } else {
         m_integerMinutes = 0;
     }
 }
 
-void AuthModule::setAuthStateLabel(DLabel *label)
-{
-    if (!label)
-        return;
+// void AuthModule::setAuthStateLabel(DLabel *label)
+// {
+//     if (!label)
+//         return;
 
-    if (m_authStateLabel) {
-        delete m_authStateLabel;
-        m_authStateLabel = nullptr;
-    }
+//     // if (m_authStateLabel) {
+//     //     delete m_authStateLabel;
+//     //     m_authStateLabel = nullptr;
+//     // }
 
-    /* 认证状态 */
-    m_authStateLabel = label;
-    setAuthStateStyle(AUTH_LOCK);
-}
+//     // /* 认证状态 */
+//     // m_authStateLabel = label;
+//     setAuthStateStyle(AUTH_LOCK);
+// }
 
 void AuthModule::setAuthFactorType(AuthFactorType authFactorType)
 {
@@ -188,4 +188,9 @@ void AuthModule::setAuthFactorType(AuthFactorType authFactorType)
 bool AuthModule::isLocked() const
 {
     return m_limitsInfo->locked;
+}
+
+bool AuthModule::isVisible() const
+{
+    return true;
 }

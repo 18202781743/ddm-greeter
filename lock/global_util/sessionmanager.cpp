@@ -6,7 +6,6 @@
 #include "sessionbasemodel.h"
 
 #include <QDebug>
-#include <DMessageBox>
 #include <DSysInfo>
 
 DCORE_USE_NAMESPACE
@@ -71,8 +70,8 @@ SessionManager &SessionManager::Reference()
 SessionManager::SessionManager(QObject *parent)
     : QObject(parent)
     , m_model(nullptr)
-    , m_sessionModel(new QLightDM::SessionsModel(this))
-    , m_userModel(new QLightDM::UsersModel(this))
+    // , m_sessionModel(new QLightDM::SessionsModel(this))
+    // , m_userModel(new QLightDM::UsersModel(this))
 {
 }
 
@@ -88,7 +87,8 @@ void SessionManager::setModel(SessionBaseModel * const model)
 
 int SessionManager::sessionCount() const
 {
-    return m_sessionModel->rowCount(QModelIndex());
+    return 0;
+    // return m_sessionModel->rowCount(QModelIndex());
 }
 
 QString SessionManager::currentSession() const
@@ -100,13 +100,13 @@ QMap<QString, QString> SessionManager::sessionInfo() const
 {
     // key:sessionName; value:icon
     QMap<QString, QString> infos;
-    int count = sessionCount();
-    for (int i = 0; i < count; ++i) {
-        const QString &sessionName = m_sessionModel->data(m_sessionModel->index(i), QLightDM::SessionsModel::KeyRole).toString();
-        const QString &displayName = displaySessionName(sessionName);
-        const QString icon = QString(":/img/sessions_icon/%1_normal.svg").arg(sessionIconName(sessionName));
-        infos[displayName] = icon;
-    }
+    // int count = sessionCount();
+    // for (int i = 0; i < count; ++i) {
+    //     const QString &sessionName = m_sessionModel->data(m_sessionModel->index(i), QLightDM::SessionsModel::KeyRole).toString();
+    //     const QString &displayName = displaySessionName(sessionName);
+    //     const QString icon = QString(":/img/sessions_icon/%1_normal.svg").arg(sessionIconName(sessionName));
+    //     infos[displayName] = icon;
+    // }
 
     return infos;
 }
@@ -128,34 +128,35 @@ void SessionManager::switchSession(const QString &sessionName)
 
 QString SessionManager::getSessionKey(const QString &sessionName) const
 {
-    const int count = m_sessionModel->rowCount(QModelIndex());
-    Q_ASSERT(count);
-    QString defaultSessionKey;
-    for (int i = 0; i < count; ++i) {
-        QString sessionKey = m_sessionModel->data(m_sessionModel->index(i), QLightDM::SessionsModel::KeyRole).toString();
-        if (!sessionName.compare(sessionKey, Qt::CaseInsensitive)) {
-            return sessionKey;
-        }
+    return {};
+    // const int count = m_sessionModel->rowCount(QModelIndex());
+    // Q_ASSERT(count);
+    // QString defaultSessionKey;
+    // for (int i = 0; i < count; ++i) {
+    //     QString sessionKey = m_sessionModel->data(m_sessionModel->index(i), QLightDM::SessionsModel::KeyRole).toString();
+    //     if (!sessionName.compare(sessionKey, Qt::CaseInsensitive)) {
+    //         return sessionKey;
+    //     }
 
-        if (!DEFAULT_SESSION_NAME.compare(sessionKey, Qt::CaseInsensitive)) {
-            defaultSessionKey = sessionKey;
-        }
-    }
+    //     if (!DEFAULT_SESSION_NAME.compare(sessionKey, Qt::CaseInsensitive)) {
+    //         defaultSessionKey = sessionKey;
+    //     }
+    // }
 
-    // NOTE: The current sessionName does not exist
-    qWarning() << "The sessionName :%s does not exist, using the default value" << sessionName;
-    return defaultSessionKey;
+    // // NOTE: The current sessionName does not exist
+    // qWarning() << "The sessionName :%s does not exist, using the default value" << sessionName;
+    // return defaultSessionKey;
 }
 
 QString SessionManager::lastLoggedInSession(const QString &userName) const
 {
-    for (int i = 0; i < m_userModel->rowCount(QModelIndex()); ++i) {
-        if (userName == m_userModel->data(m_userModel->index(i), QLightDM::UsersModel::NameRole).toString()) {
-            QString session = m_userModel->data(m_userModel->index(i), QLightDM::UsersModel::SessionRole).toString();
-            if (!session.isEmpty())
-                return session;
-        }
-    }
+    // for (int i = 0; i < m_userModel->rowCount(QModelIndex()); ++i) {
+    //     if (userName == m_userModel->data(m_userModel->index(i), QLightDM::UsersModel::NameRole).toString()) {
+    //         QString session = m_userModel->data(m_userModel->index(i), QLightDM::UsersModel::SessionRole).toString();
+    //         if (!session.isEmpty())
+    //             return session;
+    //     }
+    // }
 
     return defaultConfigSession();
 }

@@ -8,14 +8,7 @@ find_package(PkgConfig REQUIRED)
 find_package(Dtk6Widget REQUIRED)
 find_package(Dtk6CMake  REQUIRED)
 find_package(Dtk6Core REQUIRED)
-find_package(Qt6 COMPONENTS
-    Core
-    Widgets
-    Concurrent
-    DBus
-    Xml
-    Svg
-    Network
+find_package(Qt6 COMPONENTS Core Widgets Concurrent DBus Xml Svg Network
 REQUIRED)
 find_package(DtkTools REQUIRED)
 
@@ -39,11 +32,11 @@ generation_dbus_interface(
     ${XML2CPP_DIR}/authenticate_interface
 )
 
-generation_dbus_interface(
-    xml/com.huawei.switchos.xml
-    HuaWeiSwitchOS
-    ${XML2CPP_DIR}/huaweiswitchos_interface
-)
+# generation_dbus_interface(
+#     xml/com.huawei.switchos.xml
+#     HuaWeiSwitchOS
+#     ${XML2CPP_DIR}/huaweiswitchos_interface
+# )
 
 generation_dbus_interface(
     xml/org.deepin.dde.Accounts1.xml
@@ -99,11 +92,11 @@ generation_dbus_interface(
     ${XML2CPP_DIR}/sessionmanager_interface
 )
 
-generation_dbus_interface(
-    xml/org.deepin.dde.SoundThemePlayer1.xml
-    SoundThemePlayer
-    ${XML2CPP_DIR}/soundthemeplayer_interface
-)
+# generation_dbus_interface(
+#     xml/org.deepin.dde.SoundThemePlayer1.xml
+#     SoundThemePlayer
+#     ${XML2CPP_DIR}/soundthemeplayer_interface
+# )
 
 generation_dbus_interface(
     xml/org.deepin.dde.SystemDisplay1.xml
@@ -136,22 +129,34 @@ aux_source_directory(global_util GLOBAL_UTILS)
 aux_source_directory(global_util/dbus GLOBAL_UTILS_DBUS)
 aux_source_directory(global_util/keyboardmonitor GLOBAL_UTILS_KEYBOARDMONITOR)
 aux_source_directory(widgets WIDGETS)
-aux_source_directory(session-widgets SESSION_WIDGETS)
+# aux_source_directory(session-widgets SESSION_WIDGETS)
 aux_source_directory(libdde-auth AUTHENTICATE)
 aux_source_directory(global_util/dbus/types DBUS_DATA_TYPES)
 
 set(QRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/resources.qrc
-    widgets/widgetsimages.qrc
-    widgets/widgetstheme.qrc
+    # widgets/widgetsimages.qrc
+    # widgets/widgetstheme.qrc
+)
+set(SESSION_WIDGETS
+    session-widgets/sessionbasemodel.h
+    session-widgets/sessionbasemodel.cpp
+    session-widgets/auth_password.cpp
+    session-widgets/auth_password.h
+    session-widgets/authinterface.h
+    session-widgets/authinterface.cpp
+    session-widgets/userinfo.h
+    session-widgets/userinfo.cpp
+    session-widgets/auth_module.h
+    session-widgets/auth_module.cpp
 )
 
 set(LOCK_SRCS
     ${transaction_DBUS_SCRS}
     ${GLOBAL_UTILS}
     ${GLOBAL_UTILS_DBUS}
-    ${GLOBAL_UTILS_KEYBOARDMONITOR}
-    ${WIDGETS}
+    # ${GLOBAL_UTILS_KEYBOARDMONITOR}
+    # ${WIDGETS}
     ${SESSION_WIDGETS}
     ${AUTHENTICATE}
     ${QT_DBUS_EXTENDED}

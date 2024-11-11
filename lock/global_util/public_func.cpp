@@ -67,9 +67,9 @@ bool isDeepinAuth()
 uint timeFromString(QString time)
 {
     if (time.isEmpty()) {
-        return QDateTime::currentDateTime().toTime_t();
+        return QDateTime::currentDateTime().toMSecsSinceEpoch();
     }
-    return QDateTime::fromString(time, Qt::ISODateWithMs).toLocalTime().toTime_t();
+    return QDateTime::fromString(time, Qt::ISODateWithMs).toLocalTime().toMSecsSinceEpoch();
 }
 
 /**

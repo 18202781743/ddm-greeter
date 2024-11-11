@@ -4,14 +4,14 @@
 
 #include "lockcontent.h"
 
-#include "base_module_interface.h"
+// #include "base_module_interface.h"
 #include "controlwidget.h"
 #include "logowidget.h"
 #include "mfa_widget.h"
 #include "modules_loader.h"
 #include "sessionbasemodel.h"
 #include "sfa_widget.h"
-#include "shutdownwidget.h"
+// #include "shutdownwidget.h"
 #include "timewidget.h"
 #include "userframelist.h"
 

@@ -5,8 +5,10 @@
 #ifndef SESSIONWIDGET_H
 #define SESSIONWIDGET_H
 
-#include <QLightDM/SessionsModel>
-#include <QLightDM/UsersModel>
+// #include <QLightDM/SessionsModel>
+// #include <QLightDM/UsersModel>
+#include <QObject>
+#include <QString>
 
 class SessionBaseModel;
 class SessionManager : public QObject
@@ -36,8 +38,8 @@ private:
 
 private:
     SessionBaseModel *m_model;
-    QLightDM::SessionsModel *m_sessionModel;
-    QLightDM::UsersModel *m_userModel;
+    // QLightDM::SessionsModel *m_sessionModel;
+    // QLightDM::UsersModel *m_userModel;
 };
 
 #endif // SESSIONWIDGET_H

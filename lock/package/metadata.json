@@ -2,6 +2,6 @@
     "Plugin": {
         "Version": "1.0",
         "Id": "org.deepin.ds.greeter.lock",
-        "Parent": "org.deepin.ds.greeter"
+        "Parent": "org.deepin.ds.greeter2"
     }
 }

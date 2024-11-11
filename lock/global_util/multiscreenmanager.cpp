@@ -3,12 +3,11 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "multiscreenmanager.h"
-#include "fullscreenbackground.h"
 
 #include <QApplication>
-#include <QDesktopWidget>
+// #include <QDesktopWidget>
 #include <QDebug>
-#include <QDesktopWidget>
+// #include <QDesktopWidget>
 #include <QJsonDocument>
 #include <QJsonObject>
 
@@ -112,10 +111,10 @@ void MultiScreenManager::onScreenRemoved(QPointer<QScreen> screen)
                 QScreen *screen = qApp->screens().first();
                 // 更新frame绑定的屏幕
                 m_frames[screen] = frame;
-                FullscreenBackground *fullScreenFrame = qobject_cast<FullscreenBackground*>(frame);
-                if (fullScreenFrame) {
-                    fullScreenFrame->setScreen(screen, true);
-                }
+                // FullscreenBackground *fullScreenFrame = qobject_cast<FullscreenBackground*>(frame);
+                // if (fullScreenFrame) {
+                //     fullScreenFrame->setScreen(screen, true);
+                // }
             } else {
                 frame->deleteLater();
             }
