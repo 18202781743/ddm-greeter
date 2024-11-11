@@ -57,13 +57,6 @@ bool GreeterPanel::init()
         Q_ASSERT(containment);
         connect(containment, SIGNAL(loginFailed(const QString&)), this, SLOT(onLoginFailed(const QString &)));
         connect(containment, SIGNAL(loginSuccessed(const QString&)), this, SLOT(onLoginSuccessed(const QString &)));
-        // for (auto item : containment->applets()) {
-        //     if (auto auth = item->property("auth").value<GreeterAuthInterface *>()) {
-        //         m_proxy->setAuth(auth);
-        //         qDebug() << "Using authentication applet:" << item->pluginId();
-        //         break;
-        //     }
-        // }
     }
 
     m_proxy->init();
@@ -77,10 +70,20 @@ GreeterProxy *GreeterPanel::proxy() const
     return m_proxy;
 }
 
+void GreeterPanel::setAuthActive(bool active)
+{
+    if (active == m_authActive)
+        return;
+    m_authActive = active;
+    emit authActiveChanged(m_authActive);
+}
+
 void GreeterPanel::show()
 {
     m_visible = true;
     emit visibleChanged(m_visible);
+
+    setAuthActive(true);
 }
 
 void GreeterPanel::showUserList()
@@ -106,6 +109,11 @@ void GreeterPanel::hibernate(bool enable)
 bool GreeterPanel::visible() const
 {
     return m_visible;
+}
+
+bool GreeterPanel::authActive() const
+{
+    return m_authActive;
 }
 
 void GreeterPanel::onLoginFailed(const QString &user)

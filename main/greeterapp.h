@@ -30,6 +30,7 @@ class GreeterPanel : public DS_NAMESPACE::DPanel
 {
     Q_OBJECT
     Q_PROPERTY(GreeterProxy* proxy READ proxy NOTIFY proxyChanged)
+    Q_PROPERTY(bool authActive READ authActive NOTIFY authActiveChanged)
 public:
     explicit GreeterPanel(QObject *parent = nullptr);
 
@@ -39,6 +40,9 @@ public:
 
     GreeterProxy *proxy() const;
 
+private:
+    void setAuthActive(bool active);
+
 public slots:
     void show();
     void showUserList();
@@ -46,10 +50,11 @@ public slots:
     void suspend(bool enable);
     void hibernate(bool enable);
     bool visible() const;
+    bool authActive() const;
 signals:
     void visibleChanged(bool visible);
+    void authActiveChanged(bool active);
 
-signals:
     void proxyChanged();
     void localeChanged(const QString &locale);
 
@@ -60,6 +65,7 @@ private slots:
 private:
     GreeterProxy *m_proxy = nullptr;
     bool m_visible = false;
+    bool m_authActive = false;
 };
 
 #endif // GREETERAPP_H

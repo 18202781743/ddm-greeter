@@ -23,12 +23,16 @@ signals:
     void loginFailed(const QString &user);
     void loginSuccessed(const QString &user);
 
+protected:
+    QString userName() const;
+    bool active() const;
+
 private slots:
     void requestAuthentication(bool active);
+    void initAuth();
 
 private:
     QObject *greeter() const;
     QObject *greeterProxy() const;
     QObject *userModel() const;
-    QString currentUserName() const;
 };

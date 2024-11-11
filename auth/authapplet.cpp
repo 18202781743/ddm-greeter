@@ -25,34 +25,11 @@ bool AuthApplet::load()
 
 bool AuthApplet::init()
 {
-    if (auto proxy = greeter()) {
-        QObject::connect(proxy, SIGNAL(visibleChanged(bool)), this, SLOT(requestAuthentication(bool)));
-    }
     if (rootObject()) {
-        const auto user = currentUserName();
-        AuthManager::instance()->setUser(user);
-
-        connect(AuthManager::instance(), &AuthManager::authFailed, this, [this] () {
-            const auto user = currentUserName();
-            emit loginFailed(user);
-        });
-        connect(AuthManager::instance(), &AuthManager::authSuccessed, this, [this] () {
-            const auto user = currentUserName();
-            emit loginSuccessed(user);
-        });
+        initAuth();
     } else {
         connect(this, &AuthApplet::rootObjectChanged, [this] () {
-            const auto user = currentUserName();
-            AuthManager::instance()->setUser(user);
-
-            connect(AuthManager::instance(), &AuthManager::authFailed, this, [this] () {
-                const auto user = currentUserName();
-                emit loginFailed(user);
-            });
-            connect(AuthManager::instance(), &AuthManager::authSuccessed, this, [this] () {
-                const auto user = currentUserName();
-                emit loginSuccessed(user);
-            });
+            initAuth();
         });
     }
 
@@ -61,11 +38,32 @@ bool AuthApplet::init()
 
 void AuthApplet::requestAuthentication(bool active)
 {
+    qDebug() << "Request auth" << active;
     if (active) {
         AuthManager::instance()->requestCreate();
         AuthManager::instance()->requestStart();
     } else {
         AuthManager::instance()->requestDestroy();
+    }
+}
+
+void AuthApplet::initAuth()
+{
+    const auto user = userName();
+    AuthManager::instance()->setUser(user);
+
+    connect(AuthManager::instance(), &AuthManager::authFailed, this, [this] () {
+        const auto user = userName();
+        emit loginFailed(user);
+    });
+    connect(AuthManager::instance(), &AuthManager::authSuccessed, this, [this] () {
+        const auto user = userName();
+        emit loginSuccessed(user);
+    });
+
+    if (auto proxy = greeter()) {
+        QObject::connect(proxy, SIGNAL(authActiveChanged(bool)), this, SLOT(requestAuthentication(bool)));
+        requestAuthentication(active());
     }
 }
 
@@ -96,12 +94,20 @@ QObject *AuthApplet::userModel() const
     return nullptr;
 }
 
-QString AuthApplet::currentUserName() const
+QString AuthApplet::userName() const
 {
     if (auto proxy = userModel()) {
         return proxy->property("currentUserName").toString();
     }
     return {};
+}
+
+bool AuthApplet::active() const
+{
+    if (auto proxy = greeter()) {
+        return proxy->property("authActive").toBool();
+    }
+    return false;
 }
 
 D_APPLET_CLASS(AuthApplet)
