@@ -18,45 +18,6 @@ RowLayout {
         implicitWidth: bottomGroup.buttonSize + 6
         implicitHeight: bottomGroup.buttonSize + 6
         Layout.alignment: Qt.AlignHCenter
-        visible: sessionList.count > 1
-
-        D.RoundButton {
-            id: sessionsBtn
-
-            property bool expand: false
-            icon.name: "login_keyboard"
-            icon.width: 16
-            icon.height: 16
-            width: expand ? bottomGroup.buttonSize + 6 : bottomGroup.buttonSize
-            height: expand ? bottomGroup.buttonSize + 6 : bottomGroup.buttonSize
-            anchors.centerIn: parent
-            hoverEnabled: parent.visible
-
-            D.ToolTip.visible: hovered
-            D.ToolTip.text: qsTr("Other Users")
-
-            SessionList {
-                id: sessionList
-                x: (sessionsBtn.width - sessionList.width) / 2 - 10
-                y: -sessionList.height - 10
-                onClosed: sessionsBtn.expand = false
-            }
-
-            onClicked: {
-                sessionsBtn.expand = true
-                sessionList.open()
-            }
-
-            background: RoundBlur {
-                radius: sessionsBtn.width / 2
-            }
-        }
-    }
-
-    Item {
-        implicitWidth: bottomGroup.buttonSize + 6
-        implicitHeight: bottomGroup.buttonSize + 6
-        Layout.alignment: Qt.AlignHCenter
         visible: userList.count > 1
 
         D.RoundButton {
@@ -93,20 +54,22 @@ RowLayout {
     }
 
     Item {
-        id: powerBtn
         implicitWidth: controlView.width
         implicitHeight: controlView.height
-        Layout.alignment: Qt.AlignHCenter
+        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
         ListView {
             id: controlView
             height: 36
             width: contentWidth
             orientation: ListView.Horizontal
+            spacing: 15
             property var controlApplet: DS.applet("org.deepin.ds.greeter.control")
             model: controlApplet ? controlApplet.appletItems : null
             delegate: Control {
                 id: controlItem
+                width: 36
+                height: 36
                 contentItem: model.data
                 background: RoundBlur {
                     radius: controlItem.width / 2

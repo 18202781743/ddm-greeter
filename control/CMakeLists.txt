@@ -5,3 +5,4 @@
 ds_install_package(PACKAGE org.deepin.ds.control TARGET)
 
 add_subdirectory(power)
+add_subdirectory(session)

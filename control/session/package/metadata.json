@@ -1,0 +1,8 @@
+{
+    "Plugin": {
+        "Version": "1.0",
+        "Id": "org.deepin.ds.greeter.sessioncontrol",
+        "Parent": "org.deepin.ds.greeter.control",
+        "Url": "Main.qml"
+    }
+}
