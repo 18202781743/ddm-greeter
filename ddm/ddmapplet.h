@@ -9,12 +9,12 @@
 DS_USE_NAMESPACE
 
 class QLocalSocket;
-class DDMSocketApplet : public DApplet
+class DDMApplet : public DApplet
 {
     Q_OBJECT
 public:
-    explicit DDMSocketApplet(QObject *parent = nullptr);
-    ~DDMSocketApplet();
+    explicit DDMApplet(QObject *parent = nullptr);
+    ~DDMApplet();
 
     bool load() override;
 

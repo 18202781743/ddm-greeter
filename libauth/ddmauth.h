@@ -4,7 +4,6 @@
 
 #pragma once
 
-
 #include "authinterface.h"
 
 #include <QPointer>
@@ -13,7 +12,7 @@ class DDMAuth : public AuthInterface
 {
     Q_OBJECT
 public:
-    DDMAuth(QObject *parent = nullptr);
+    explicit DDMAuth(QObject *parent = nullptr);
 
     void setImpl(QObject *impl);
 

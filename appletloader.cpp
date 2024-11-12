@@ -62,7 +62,10 @@ public:
             return data.groupList();
 
         QList<DAppletData> groups;
-        const auto children = DPluginLoader::instance()->childrenPlugin(applet->pluginMetaData().pluginId());
+        auto children = DPluginLoader::instance()->childrenPlugin(applet->pluginMetaData().pluginId());
+        std::sort(children.begin(), children.end(), [] (const DPluginMetaData &item1, const DPluginMetaData &item2) {
+            return item1.value("Order", 0).toInt() > item2.value("Order", 0).toInt();
+        });
         for (const auto &item : children) {
             groups << DAppletData::fromPluginMetaData(item);
         }

@@ -21,6 +21,11 @@
 
 #include "deepinauthframework.h"
 
+DAAuth::DAAuth(QObject *parent)
+    : AuthInterface(parent)
+{
+}
+
 void DAAuth::setImpl(DeepinAuthFramework *impl)
 {
     m_impl = impl;

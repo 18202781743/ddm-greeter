@@ -19,7 +19,7 @@ PowerApplet::PowerApplet(QObject *parent)
 
 bool PowerApplet::init()
 {
-    DAppletBridge bridge("org.deepin.ds.greeter.ddmsocket");
+    DAppletBridge bridge("org.deepin.ds.greeter.ddm");
     if (auto applet = bridge.applet()) {
         auto ddm = new DDMPower(this);
         ddm->setImpl(applet);

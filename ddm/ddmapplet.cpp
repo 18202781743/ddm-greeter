@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include "ddmsocketapplet.h"
+#include "ddmapplet.h"
 
 #include <QCoreApplication>
 #include <QLocalSocket>
@@ -15,66 +15,66 @@
 
 using namespace DDM;
 
-bool DDMSocketApplet::isConnected() const
+bool DDMApplet::isConnected() const
 {
     return m_socket->state() == QLocalSocket::ConnectedState;
 }
 
-void DDMSocketApplet::connected()
+void DDMApplet::connected()
 {
     qDebug() << "Connected to the daemon.";
 
     SocketWriter(m_socket) << quint32(GreeterMessages::Connect);
 }
 
-void DDMSocketApplet::disconnected()
+void DDMApplet::disconnected()
 {
     qDebug() << "Disconnected from the daemon.";
 
     Q_EMIT socketDisconnected();
 }
 
-void DDMSocketApplet::error()
+void DDMApplet::error()
 {
     qCritical() << "Socket error: " << m_socket->errorString();
 }
 
-void DDMSocketApplet::powerOff()
+void DDMApplet::powerOff()
 {
     SocketWriter(m_socket) << quint32(GreeterMessages::PowerOff);
 }
 
-void DDMSocketApplet::reboot()
+void DDMApplet::reboot()
 {
     SocketWriter(m_socket) << quint32(GreeterMessages::Reboot);
 }
 
-void DDMSocketApplet::suspend()
+void DDMApplet::suspend()
 {
     SocketWriter(m_socket) << quint32(GreeterMessages::Suspend);
 }
 
-void DDMSocketApplet::hibernate()
+void DDMApplet::hibernate()
 {
     SocketWriter(m_socket) << quint32(GreeterMessages::Hibernate);
 }
 
-void DDMSocketApplet::hybridSleep()
+void DDMApplet::hybridSleep()
 {
     SocketWriter(m_socket) << quint32(GreeterMessages::HybridSleep);
 }
 
-QString DDMSocketApplet::hostName() const
+QString DDMApplet::hostName() const
 {
     return m_hostName;
 }
 
-int DDMSocketApplet::capabilities() const
+int DDMApplet::capabilities() const
 {
     return m_capabilities;
 }
 
-void DDMSocketApplet::login(const QString &user, const QString &password, const QVariantMap &session) const
+void DDMApplet::login(const QString &user, const QString &password, const QVariantMap &session) const
 {
     Session::Type type =
         static_cast<Session::Type>(session["type"].toInt());
@@ -84,17 +84,17 @@ void DDMSocketApplet::login(const QString &user, const QString &password, const 
 
 }
 
-void DDMSocketApplet::activateUser(const QString &user)
+void DDMApplet::activateUser(const QString &user)
 {
     SocketWriter(m_socket) << quint32(GreeterMessages::ActivateUser) << user;
 }
 
-void DDMSocketApplet::unlock(const QString &user, const QString &password)
+void DDMApplet::unlock(const QString &user, const QString &password)
 {
     SocketWriter(m_socket) << quint32(GreeterMessages::Unlock) << user << password;
 }
 
-void DDMSocketApplet::readyRead()
+void DDMApplet::readyRead()
 {
     // input stream
     QDataStream input(m_socket);
@@ -164,7 +164,7 @@ void DDMSocketApplet::readyRead()
     }
 }
 
-bool DDMSocketApplet::initSocket()
+bool DDMApplet::initSocket()
 {
     const QStringList args = QCoreApplication::arguments();
      QString server;
@@ -182,10 +182,10 @@ bool DDMSocketApplet::initSocket()
      m_socket = new QLocalSocket(this);
 
      // connect signals
-     connect(m_socket, &QLocalSocket::connected, this, &DDMSocketApplet::connected);
-     connect(m_socket, &QLocalSocket::disconnected, this, &DDMSocketApplet::disconnected);
-     connect(m_socket, &QLocalSocket::readyRead, this, &DDMSocketApplet::readyRead);
-     connect(m_socket, &QLocalSocket::errorOccurred, this, &DDMSocketApplet::error);
+     connect(m_socket, &QLocalSocket::connected, this, &DDMApplet::connected);
+     connect(m_socket, &QLocalSocket::disconnected, this, &DDMApplet::disconnected);
+     connect(m_socket, &QLocalSocket::readyRead, this, &DDMApplet::readyRead);
+     connect(m_socket, &QLocalSocket::errorOccurred, this, &DDMApplet::error);
 
      // connect to server
      m_socket->connectToServer(server);
@@ -198,12 +198,12 @@ bool DDMSocketApplet::initSocket()
      return true;
 }
 
-DDMSocketApplet::DDMSocketApplet(QObject *parent)
+DDMApplet::DDMApplet(QObject *parent)
     : DApplet(parent)
 {
 }
 
-bool DDMSocketApplet::load()
+bool DDMApplet::load()
 {
     initSocket();
     if (!m_socket)
@@ -212,12 +212,12 @@ bool DDMSocketApplet::load()
     return DApplet::load();
 }
 
-DDMSocketApplet::~DDMSocketApplet()
+DDMApplet::~DDMApplet()
 {
     if (m_socket)
         m_socket->deleteLater();
 }
 
-D_APPLET_CLASS(DDMSocketApplet)
+D_APPLET_CLASS(DDMApplet)
 
-#include "ddmsocketapplet.moc"
+#include "ddmapplet.moc"

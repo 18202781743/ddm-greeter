@@ -37,9 +37,17 @@ AuthManager *AuthManager::instance()
     static AuthManager *g_instance = nullptr;
     if (!g_instance) {
         g_instance = new AuthManager();
-        g_instance->d->m_authFramework = new DeepinAuthFramework();
     }
     return g_instance;
+}
+
+void AuthManager::setAuthFrame(AuthInterface::AuthFrameType type)
+{
+    qDebug() << "Auth frame type:" << type;
+    d->m_authFrameType = type;
+    if (type == AuthInterface::AF_DA) {
+        d->m_authFramework = new DeepinAuthFramework();
+    }
 }
 
 void AuthManager::setDDMAuthImpl(QObject *impl)
@@ -80,7 +88,10 @@ AuthInterface *AuthManager::get(AuthInterface::AuthType type) const
 
 AuthInterface::AuthType AuthManager::supportedAuthType() const
 {
-    return static_cast<AuthInterface::AuthType>(d->m_authFramework->GetSupportedMixAuthFlags());
+    if (d->m_authFrameType == AuthInterface::AF_DA) {
+        return static_cast<AuthInterface::AuthType>(d->m_authFramework->GetSupportedMixAuthFlags());
+    }
+    return AuthInterface::AT_Password;
 }
 
 void AuthManager::setUser(const QString &user)

@@ -12,6 +12,11 @@
 
 using namespace DDM;
 
+DDMAuth::DDMAuth(QObject *parent)
+    : AuthInterface(parent)
+{
+}
+
 void DDMAuth::setImpl(QObject *impl)
 {
     m_impl = impl;

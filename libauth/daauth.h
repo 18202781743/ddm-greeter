@@ -25,7 +25,9 @@
 
 class DeepinAuthFramework;
 class DAAuth : public AuthInterface {
+    Q_OBJECT
 public:
+    explicit DAAuth(QObject *parent = nullptr);
 
     void setImpl(DeepinAuthFramework *impl);
 

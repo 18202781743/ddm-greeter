@@ -20,6 +20,13 @@ AuthApplet::AuthApplet(QObject *parent)
 
 bool AuthApplet::load()
 {
+    DAppletBridge bridge("org.deepin.ds.greeter.ddm");
+    if (auto applet = bridge.applet()) {
+        AuthManager::instance()->setAuthFrame(AuthInterface::AF_DDM);
+        AuthManager::instance()->setDDMAuthImpl(applet);
+    } else {
+        AuthManager::instance()->setAuthFrame(AuthInterface::AF_DA);
+    }
     return DContainment::load();
 }
 
