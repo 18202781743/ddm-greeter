@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "ddmauth.h"
+#include "authmanager.h"
 
 #include <QLocalSocket>
 #include <QLoggingCategory>
@@ -27,11 +28,7 @@ void DDMAuth::setImpl(QObject *impl)
 
 void DDMAuth::send(const QString &password)
 {
-    QString name = "deepin";
-    int type = 1;
-    QVariantMap session;
-    session["type"] = type;
-    session["name"] = name;
+    const auto session = AuthManager::instance()->session();
 
     QMetaObject::invokeMethod(m_impl, "login", Qt::DirectConnection,
                               Q_ARG(const QString &, m_user),

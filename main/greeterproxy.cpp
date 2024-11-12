@@ -21,7 +21,6 @@
 #include "greeterproxy.h"
 
 #include "global.h"
-#include "sessionmodel.h"
 #include "usermodel.h"
 #include "greeterauthinterface.h"
 
@@ -43,7 +42,6 @@ using namespace DDM;
 class GreeterProxyPrivate
 {
 public:
-    SessionModel *sessionModel{ nullptr };
     UserModel *userModel{ nullptr };
     DisplayManager *displayManager{ nullptr };
     GreeterAuthInterface *m_auth = nullptr;
@@ -56,7 +54,6 @@ GreeterProxy::GreeterProxy(QObject *parent)
 {
     d->m_auth = new GreeterAuthInterface(this);
     d->userModel = new UserModel(this);
-    d->sessionModel = new SessionModel(this);
     d->displayManager = new DisplayManager("org.freedesktop.DisplayManager",
                                            "/org/freedesktop/DisplayManager",
                                            QDBusConnection::systemBus(),
@@ -87,11 +84,6 @@ void GreeterProxy::setAuth(GreeterAuthInterface *auth)
     QObject::connect(d->m_auth, &GreeterAuthInterface::canHybridSleepChanged, this, &GreeterProxy::canHybridSleepChanged);
     QObject::connect(d->m_auth, &GreeterAuthInterface::loginFailed, this, &GreeterProxy::onLoginFailed);
     QObject::connect(d->m_auth, &GreeterAuthInterface::loginSucceeded, this, &GreeterProxy::onLoginSuccessed);
-}
-
-SessionModel *GreeterProxy::sessionModel() const
-{
-    return d->sessionModel;
 }
 
 UserModel *GreeterProxy::userModel() const
@@ -163,30 +155,6 @@ void GreeterProxy::init()
     }
     connect(d->userModel, &UserModel::currentUserNameChanged, this, &GreeterProxy::currentUserChanged);
     connect(this, &GreeterProxy::currentUserChanged, this, &GreeterProxy::onCurrentUserChanged);
-}
-
-void GreeterProxy::login(const QString &user, const QString &password) const
-{
-    if (!d->sessionModel) {
-        qCCritical(dmGreeter) << "Session model is not set.";
-
-        return;
-    }
-
-    const auto sessionIndex = d->sessionModel->lastIndex();
-    // get model index
-    QModelIndex index = d->sessionModel->index(sessionIndex, 0);
-
-    // send command to the daemon
-    Session::Type type =
-        static_cast<Session::Type>(d->sessionModel->data(index, SessionModel::TypeRole).toInt());
-    QString name = d->sessionModel->data(index, SessionModel::FileRole).toString();
-
-    QVariantMap session;
-    session["type"] = type;
-    session["name"] = name;
-    qCDebug(dmGreeter) << "Logining" << user << ", session name:" << name;
-    d->m_auth->login(user, password, session);
 }
 
 void GreeterProxy::unlock(const QString &user, const QString &password)

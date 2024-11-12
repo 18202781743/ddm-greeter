@@ -7,8 +7,6 @@ find_package(DDEShell REQUIRED)
 set(GREETER_SOURCES
     greeterproxy.h
     greeterproxy.cpp
-    sessionmodel.h
-    sessionmodel.cpp
     usermodel.h
     usermodel.cpp
     user.h
@@ -41,7 +39,6 @@ qt_add_dbus_interface(DDM_DBUS_SOURCES "interfaces/org.freedesktop.DisplayManage
 set(QML_FILES
     qml/Greeter.qml
     qml/UserList.qml
-    qml/SessionList.qml
     qml/UserInput.qml
     qml/UserView.qml
     qml/LoginAnimation.qml

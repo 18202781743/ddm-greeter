@@ -38,6 +38,9 @@ public:
 
     AuthInterface::AuthType supportedAuthType() const;
     void setUser(const QString &user);
+    void setSession(const QVariantMap &session);
+    QVariantMap session() const;
+
     void requestCreate();
     void requestStart();
     void requestDestroy();

@@ -33,6 +33,7 @@ protected:
 private slots:
     void requestAuthentication(bool active);
     void initAuth();
+    void updateCurrentSession();
 
 private:
     QObject *greeter() const;

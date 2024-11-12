@@ -32,6 +32,11 @@ bool AuthApplet::load()
 
 bool AuthApplet::init()
 {
+    DAppletBridge bridge("org.deepin.ds.greeter.sessioncontrol");
+    if (auto applet = bridge.applet()) {
+        connect(applet, SIGNAL(currentSessionChanged()), this, SLOT(updateCurrentSession()));
+        updateCurrentSession();
+    }
     if (rootObject()) {
         initAuth();
     } else {
@@ -79,6 +84,17 @@ void AuthApplet::initAuth()
     if (auto proxy = greeter()) {
         QObject::connect(proxy, SIGNAL(authActiveChanged(bool)), this, SLOT(requestAuthentication(bool)));
         requestAuthentication(active());
+    }
+}
+
+void AuthApplet::updateCurrentSession()
+{
+    qDebug() << "Update current session";
+    DAppletBridge bridge("org.deepin.ds.greeter.sessioncontrol");
+    if (auto applet = bridge.applet()) {
+        QVariantMap session;
+        QMetaObject::invokeMethod(applet, "currentSession", Qt::DirectConnection, Q_RETURN_ARG(QVariantMap, session));
+        AuthManager::instance()->setSession(session);
     }
 }
 

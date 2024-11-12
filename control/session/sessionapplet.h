@@ -17,12 +17,15 @@ public:
     explicit SessionApplet(QObject *parent = nullptr);
     ~SessionApplet();
 
-    virtual bool init() override;
+    virtual bool load() override;
 
     SessionModel *sessionModel() const;
 
+    Q_INVOKABLE QVariantMap currentSession() const;
+
 signals:
     void sessionModelChanged();
+    void currentSessionChanged();
 private:
     SessionModel *m_sessionModel{ nullptr };
 };

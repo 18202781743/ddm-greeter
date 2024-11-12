@@ -25,12 +25,10 @@
 #include <QDBusObjectPath>
 #include <QObject>
 #include <QtQml/qqml.h>
-Q_MOC_INCLUDE(<sessionmodel.h>)
 Q_MOC_INCLUDE(<usermodel.h>)
 
 class QLocalSocket;
 
-class SessionModel;
 class UserModel;
 
 class GreeterProxyPrivate;
@@ -46,7 +44,6 @@ class GreeterProxy : public QObject
     Q_PROPERTY(bool     canSuspend      READ canSuspend     NOTIFY canSuspendChanged)
     Q_PROPERTY(bool     canHibernate    READ canHibernate   NOTIFY canHibernateChanged)
     Q_PROPERTY(bool     canHybridSleep  READ canHybridSleep NOTIFY canHybridSleepChanged)
-    Q_PROPERTY(SessionModel* sessionModel READ sessionModel NOTIFY sessionModelChanged)
     Q_PROPERTY(UserModel* userModel READ userModel NOTIFY userModelChanged)
 
 public:
@@ -72,7 +69,6 @@ public:
 
     bool isConnected() const;
 
-    SessionModel *sessionModel() const;
     UserModel *userModel() const;
 
     GreeterState state() const;
@@ -86,7 +82,6 @@ public Q_SLOTS:
     void hybridSleep();
     void init();
 
-    void login(const QString &user, const QString &password) const;
     void activateUser(const QString &user);
     void unlock(const QString &user, const QString &password);
 
@@ -111,7 +106,6 @@ Q_SIGNALS:
     void canSuspendChanged(bool canSuspend);
     void canHibernateChanged(bool canHibernate);
     void canHybridSleepChanged(bool canHybridSleep);
-    void sessionModelChanged(SessionModel *model);
     void userModelChanged(UserModel *model);
 
     void socketDisconnected();

@@ -30,6 +30,7 @@ public:
     DeepinAuthFramework *m_authFramework = nullptr;
     QMap<AuthInterface::AuthType, AuthInterface *> m_auths;
     QPointer<QObject> m_ddmAuthImpl;
+    QVariantMap m_session;
 };
 
 AuthManager *AuthManager::instance()
@@ -100,6 +101,17 @@ void AuthManager::setUser(const QString &user)
     for (auto item : d->m_auths) {
         item->setUser(user);
     }
+}
+
+void AuthManager::setSession(const QVariantMap &session)
+{
+    qDebug() << "Update current session" << session;
+    d->m_session = session;
+}
+
+QVariantMap AuthManager::session() const
+{
+    return d->m_session;
 }
 
 void AuthManager::requestCreate()
