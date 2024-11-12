@@ -26,8 +26,6 @@
 
 #include <DisplayManager.h>
 #include <DisplayManagerSession.h>
-#include <Messages.h>
-#include <SocketWriter.h>
 
 #include <QCommandLineOption>
 #include <QCommandLineParser>
@@ -36,8 +34,6 @@
 #include <QVariantMap>
 
 Q_LOGGING_CATEGORY(dmGreeter, "ddm.greeter", QtDebugMsg);
-
-using namespace DDM;
 
 class GreeterProxyPrivate
 {
@@ -77,11 +73,6 @@ void GreeterProxy::setAuth(GreeterAuthInterface *auth)
     }
     d->m_auth = auth;
     QObject::connect(d->m_auth, &GreeterAuthInterface::hostNameChanged, this, &GreeterProxy::hostNameChanged);
-    QObject::connect(d->m_auth, &GreeterAuthInterface::canPowerOffChanged, this, &GreeterProxy::canPowerOffChanged);
-    QObject::connect(d->m_auth, &GreeterAuthInterface::canRebootChanged, this, &GreeterProxy::canRebootChanged);
-    QObject::connect(d->m_auth, &GreeterAuthInterface::canSuspendChanged, this, &GreeterProxy::canSuspendChanged);
-    QObject::connect(d->m_auth, &GreeterAuthInterface::canHibernateChanged, this, &GreeterProxy::canHibernateChanged);
-    QObject::connect(d->m_auth, &GreeterAuthInterface::canHybridSleepChanged, this, &GreeterProxy::canHybridSleepChanged);
     QObject::connect(d->m_auth, &GreeterAuthInterface::loginFailed, this, &GreeterProxy::onLoginFailed);
     QObject::connect(d->m_auth, &GreeterAuthInterface::loginSucceeded, this, &GreeterProxy::onLoginSuccessed);
 }
@@ -89,56 +80,6 @@ void GreeterProxy::setAuth(GreeterAuthInterface *auth)
 UserModel *GreeterProxy::userModel() const
 {
     return d->userModel;
-}
-
-bool GreeterProxy::canPowerOff() const
-{
-    return d->m_auth->canPowerOff();
-}
-
-bool GreeterProxy::canReboot() const
-{
-    return d->m_auth->canReboot();
-}
-
-bool GreeterProxy::canSuspend() const
-{
-    return d->m_auth->canSuspend();
-}
-
-bool GreeterProxy::canHibernate() const
-{
-    return d->m_auth->canHibernate();
-}
-
-bool GreeterProxy::canHybridSleep() const
-{
-    return d->m_auth->canHybridSleep();
-}
-
-void GreeterProxy::powerOff()
-{
-    d->m_auth->powerOff();
-}
-
-void GreeterProxy::reboot()
-{
-    d->m_auth->reboot();
-}
-
-void GreeterProxy::suspend()
-{
-    d->m_auth->suspend();
-}
-
-void GreeterProxy::hibernate()
-{
-    d->m_auth->hibernate();
-}
-
-void GreeterProxy::hybridSleep()
-{
-    d->m_auth->hybridSleep();
 }
 
 void GreeterProxy::init()

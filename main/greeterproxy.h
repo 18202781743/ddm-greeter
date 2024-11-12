@@ -39,11 +39,6 @@ class GreeterProxy : public QObject
     QML_NAMED_ELEMENT(Proxy)
     Q_PROPERTY(GreeterState  state      READ state          NOTIFY stateChanged)
     Q_PROPERTY(QString  hostName        READ hostName       NOTIFY hostNameChanged)
-    Q_PROPERTY(bool     canPowerOff     READ canPowerOff    NOTIFY canPowerOffChanged)
-    Q_PROPERTY(bool     canReboot       READ canReboot      NOTIFY canRebootChanged)
-    Q_PROPERTY(bool     canSuspend      READ canSuspend     NOTIFY canSuspendChanged)
-    Q_PROPERTY(bool     canHibernate    READ canHibernate   NOTIFY canHibernateChanged)
-    Q_PROPERTY(bool     canHybridSleep  READ canHybridSleep NOTIFY canHybridSleepChanged)
     Q_PROPERTY(UserModel* userModel READ userModel NOTIFY userModelChanged)
 
 public:
@@ -61,13 +56,6 @@ public:
     void setAuth(GreeterAuthInterface *auth);
 
     QString hostName() const;
-    bool canPowerOff() const;
-    bool canReboot() const;
-    bool canSuspend() const;
-    bool canHibernate() const;
-    bool canHybridSleep() const;
-
-    bool isConnected() const;
 
     UserModel *userModel() const;
 
@@ -75,11 +63,6 @@ public:
     void setState(GreeterState state);
 
 public Q_SLOTS:
-    void powerOff();
-    void reboot();
-    void suspend();
-    void hibernate();
-    void hybridSleep();
     void init();
 
     void activateUser(const QString &user);
@@ -90,22 +73,12 @@ public Q_SLOTS:
     void onLoginSuccessed(const QString &user);
 
 private Q_SLOTS:
-    void connected();
-    void disconnected();
-    void readyRead();
-    void error();
     void onSessionAdded(const QDBusObjectPath &session);
     void onSessionRemoved(const QDBusObjectPath &session);
     void onCurrentUserChanged();
 
 Q_SIGNALS:
-    void informationMessage(const QString &message);
     void hostNameChanged(const QString &hostName);
-    void canPowerOffChanged(bool canPowerOff);
-    void canRebootChanged(bool canReboot);
-    void canSuspendChanged(bool canSuspend);
-    void canHibernateChanged(bool canHibernate);
-    void canHybridSleepChanged(bool canHybridSleep);
     void userModelChanged(UserModel *model);
 
     void socketDisconnected();

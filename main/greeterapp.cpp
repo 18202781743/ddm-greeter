@@ -4,7 +4,6 @@
 #include "greeterapp.h"
 #include "dbusfrontservice.h"
 #include "usermodel.h"
-#include "sessionmodel.h"
 
 #include <QLoggingCategory>
 
