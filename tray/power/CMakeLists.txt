@@ -2,6 +2,8 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+find_package(DDM REQUIRED COMPONENTS Common)
+
 add_library(ds-greeter-power SHARED
     powerapplet.h
     powerapplet.cpp
@@ -9,12 +11,15 @@ add_library(ds-greeter-power SHARED
     powerinterface.cpp
     dapower.h
     dapower.cpp
+    ddmpower.h
+    ddmpower.cpp
     global_util/dbus/sessionmanager_interface.cpp
     global_util/dbus/sessionmanager_interface.h
 )
 
 target_link_libraries(ds-greeter-power PRIVATE
     Dde::Shell
+    DDM::Common
 )
 
 target_include_directories(ds-greeter-power PUBLIC
