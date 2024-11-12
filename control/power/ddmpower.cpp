@@ -32,6 +32,8 @@ void DDMPower::setImpl(QObject *impl)
 {
     m_impl = impl;
 
+    Q_ASSERT(m_impl);
+
     connect(m_impl, SIGNAL(capabilitiesChanged(int)), this, SLOT(onCapabilitiesChanged(int)));
 
     int capabilities = 0;

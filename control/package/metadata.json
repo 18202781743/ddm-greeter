@@ -1,7 +1,7 @@
 {
     "Plugin": {
         "Version": "1.0",
-        "Id": "org.deepin.ds.greeter.tray",
+        "Id": "org.deepin.ds.greeter.control",
         "Parent": "org.deepin.ds.greeter",
         "ContainmentType": "Containment"
     }

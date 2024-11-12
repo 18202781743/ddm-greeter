@@ -28,4 +28,4 @@ target_include_directories(ds-greeter-power PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/global_util/dbus/
 )
 
-ds_install_package(PACKAGE org.deepin.ds.greeter.powertray TARGET ds-greeter-power)
+ds_install_package(PACKAGE org.deepin.ds.greeter.powercontrol TARGET ds-greeter-power)

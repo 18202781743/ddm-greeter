@@ -24,8 +24,10 @@ bool PowerApplet::init()
         auto ddm = new DDMPower(this);
         ddm->setImpl(applet);
         m_proxy = ddm;
+        qDebug() << "Created ddm power proxy";
     } else {
         m_proxy = new DAPower(this);
+        qDebug() << "Created da power proxy";
     }
 
     return DApplet::init();

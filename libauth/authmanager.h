@@ -29,6 +29,7 @@ class AuthManager : public QObject
     Q_OBJECT
 public:
     static AuthManager *instance();
+    void setDDMAuthImpl(QObject *impl);
     AuthInterface *create(AuthInterface::AuthType type);
 
     AuthInterface *get(AuthInterface::AuthType type) const;

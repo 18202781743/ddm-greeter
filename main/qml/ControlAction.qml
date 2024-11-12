@@ -94,22 +94,22 @@ RowLayout {
 
     Item {
         id: powerBtn
-        implicitWidth: trayView.width
-        implicitHeight: trayView.height
+        implicitWidth: controlView.width
+        implicitHeight: controlView.height
         Layout.alignment: Qt.AlignHCenter
 
         ListView {
-            id: trayView
+            id: controlView
             height: 36
             width: contentWidth
             orientation: ListView.Horizontal
-            property var trayApplet: DS.applet("org.deepin.ds.greeter.tray")
-            model: trayApplet ? trayApplet.appletItems : null
+            property var controlApplet: DS.applet("org.deepin.ds.greeter.control")
+            model: controlApplet ? controlApplet.appletItems : null
             delegate: Control {
-                id: trayItem
+                id: controlItem
                 contentItem: model.data
                 background: RoundBlur {
-                    radius: trayItem.width / 2
+                    radius: controlItem.width / 2
                 }
             }
         }

@@ -12,17 +12,34 @@
 
 using namespace DDM;
 
-void DDMAuth::setSocket(QLocalSocket *socket)
+void DDMAuth::setImpl(QObject *impl)
 {
-    m_socket = socket;
+    m_impl = impl;
+
+    connect(m_impl, SIGNAL(loginFailed(const QString &)), this, SLOT(onLoginFailed(const QString &)));
+    connect(m_impl, SIGNAL(loginSucceeded(const QString &)), this, SLOT(onLoginSuccessed(const QString &)));
 }
 
 void DDMAuth::send(const QString &password)
 {
+    QString name = "deepin";
+    int type = 1;
     QVariantMap session;
-    Session::Type type =
-        static_cast<Session::Type>(session["type"].toInt());
-    const QString name = session["name"].toString();
-    Session sessionInfo(type, name);
-    SocketWriter(m_socket) << quint32(GreeterMessages::Login) << m_user << password << sessionInfo;
+    session["type"] = type;
+    session["name"] = name;
+
+    QMetaObject::invokeMethod(m_impl, "login", Qt::DirectConnection,
+                              Q_ARG(const QString &, m_user),
+                              Q_ARG(const QString &, password),
+                              Q_ARG(const QVariantMap &, session));
+}
+
+void DDMAuth::onLoginFailed(const QString &user)
+{
+    setState(AuthInterface::AS_Failure);
+}
+
+void DDMAuth::onLoginSuccessed(const QString &user)
+{
+    setState(AuthInterface::AS_Success);
 }

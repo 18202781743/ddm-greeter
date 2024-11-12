@@ -2,6 +2,6 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-ds_install_package(PACKAGE org.deepin.ds.tray TARGET)
+ds_install_package(PACKAGE org.deepin.ds.control TARGET)
 
 add_subdirectory(power)

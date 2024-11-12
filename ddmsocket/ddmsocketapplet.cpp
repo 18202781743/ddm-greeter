@@ -74,9 +74,24 @@ int DDMSocketApplet::capabilities() const
     return m_capabilities;
 }
 
-QLocalSocket *DDMSocketApplet::socket()
+void DDMSocketApplet::login(const QString &user, const QString &password, const QVariantMap &session) const
 {
-    return m_socket;
+    Session::Type type =
+        static_cast<Session::Type>(session["type"].toInt());
+    const QString name = session["name"].toString();
+    Session sessionInfo(type, name);
+    SocketWriter(m_socket) << quint32(GreeterMessages::Login) << user << password << sessionInfo;
+
+}
+
+void DDMSocketApplet::activateUser(const QString &user)
+{
+    SocketWriter(m_socket) << quint32(GreeterMessages::ActivateUser) << user;
+}
+
+void DDMSocketApplet::unlock(const QString &user, const QString &password)
+{
+    SocketWriter(m_socket) << quint32(GreeterMessages::Unlock) << user << password;
 }
 
 void DDMSocketApplet::readyRead()
@@ -149,7 +164,7 @@ void DDMSocketApplet::readyRead()
     }
 }
 
-QLocalSocket *DDMSocketApplet::createSocket()
+bool DDMSocketApplet::initSocket()
 {
     const QStringList args = QCoreApplication::arguments();
      QString server;
@@ -158,36 +173,39 @@ QLocalSocket *DDMSocketApplet::createSocket()
      if ((pos = args.indexOf(QStringLiteral("--socket"))) >= 0) {
          if (pos >= args.length() - 1) {
              qWarning() << "The startup parameter is missing --socket.";
-             return nullptr;
+             return false;
          }
          server = args[pos + 1];
      } else {
-         return nullptr;
+         return false;
      }
-     std::unique_ptr<QLocalSocket> socket(new QLocalSocket(this));
+     m_socket = new QLocalSocket(this);
+
      // connect signals
-     connect(socket.get(), &QLocalSocket::connected, this, &DDMSocketApplet::connected);
-     connect(socket.get(), &QLocalSocket::disconnected, this, &DDMSocketApplet::disconnected);
-     connect(socket.get(), &QLocalSocket::readyRead, this, &DDMSocketApplet::readyRead);
-     connect(socket.get(), &QLocalSocket::errorOccurred, this, &DDMSocketApplet::error);
+     connect(m_socket, &QLocalSocket::connected, this, &DDMSocketApplet::connected);
+     connect(m_socket, &QLocalSocket::disconnected, this, &DDMSocketApplet::disconnected);
+     connect(m_socket, &QLocalSocket::readyRead, this, &DDMSocketApplet::readyRead);
+     connect(m_socket, &QLocalSocket::errorOccurred, this, &DDMSocketApplet::error);
 
      // connect to server
-     socket->connectToServer(server);
-     if (!socket->isValid()) {
+     m_socket->connectToServer(server);
+     if (!m_socket->isValid()) {
          qWarning() << "Can't connect to service." << server << ", error:" << m_socket->error();
-         return nullptr;
+         m_socket->deleteLater();
+         m_socket = nullptr;
+         return false;
      }
-     return socket.release();
+     return true;
 }
 
 DDMSocketApplet::DDMSocketApplet(QObject *parent)
     : DApplet(parent)
 {
-    m_socket = createSocket();
 }
 
 bool DDMSocketApplet::load()
 {
+    initSocket();
     if (!m_socket)
         return false;
 
@@ -196,6 +214,8 @@ bool DDMSocketApplet::load()
 
 DDMSocketApplet::~DDMSocketApplet()
 {
+    if (m_socket)
+        m_socket->deleteLater();
 }
 
 D_APPLET_CLASS(DDMSocketApplet)

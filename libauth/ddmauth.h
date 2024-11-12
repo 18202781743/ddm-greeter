@@ -9,17 +9,20 @@
 
 #include <QPointer>
 
-class QLocalSocket;
 class DDMAuth : public AuthInterface
 {
     Q_OBJECT
 public:
     DDMAuth(QObject *parent = nullptr);
 
-    void setSocket(QLocalSocket *socket);
+    void setImpl(QObject *impl);
 
     virtual void send(const QString &token);
 
+private slots:
+    void onLoginFailed(const QString &user);
+    void onLoginSuccessed(const QString &user);
+
 private:
-    QPointer<QLocalSocket> m_socket;
+    QPointer<QObject> m_impl;
 };

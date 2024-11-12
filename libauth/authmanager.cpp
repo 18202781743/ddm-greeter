@@ -29,6 +29,7 @@ public:
     AuthInterface::AuthFrameType m_authFrameType{ AuthInterface::AF_DA };
     DeepinAuthFramework *m_authFramework = nullptr;
     QMap<AuthInterface::AuthType, AuthInterface *> m_auths;
+    QPointer<QObject> m_ddmAuthImpl;
 };
 
 AuthManager *AuthManager::instance()
@@ -39,6 +40,11 @@ AuthManager *AuthManager::instance()
         g_instance->d->m_authFramework = new DeepinAuthFramework();
     }
     return g_instance;
+}
+
+void AuthManager::setDDMAuthImpl(QObject *impl)
+{
+    d->m_ddmAuthImpl = impl;
 }
 
 AuthInterface *AuthManager::create(AuthInterface::AuthType type)
@@ -52,7 +58,7 @@ AuthInterface *AuthManager::create(AuthInterface::AuthType type)
         auth = da;
     } else if (d->m_authFrameType == AuthInterface::AF_DDM) {
         auto ddm = new DDMAuth();
-        ddm->setSocket(nullptr);
+        ddm->setImpl(d->m_ddmAuthImpl);
         auth = ddm;
     }
     auth->m_type = type;

@@ -23,7 +23,6 @@ public:
     void disconnected();
     void error();
 
-    Q_INVOKABLE QLocalSocket *socket();
     Q_INVOKABLE void powerOff();
     Q_INVOKABLE void reboot();
     Q_INVOKABLE void suspend();
@@ -32,6 +31,11 @@ public:
 
     Q_INVOKABLE QString hostName() const;
     Q_INVOKABLE int capabilities() const;
+
+    Q_INVOKABLE void login(const QString &user, const QString &password, const QVariantMap &session) const;
+    Q_INVOKABLE void activateUser(const QString &user);
+    Q_INVOKABLE void unlock(const QString &user, const QString &password);
+
 signals:
     void capabilitiesChanged(int capabilities);
     void hostNameChanged(const QString &hostName);
@@ -45,7 +49,7 @@ private slots:
     void readyRead();
 
 private:
-    QLocalSocket *createSocket();
+    bool initSocket();
 private:
     QLocalSocket *m_socket{ nullptr };
     QString m_hostName;

@@ -1,8 +1,0 @@
-{
-    "Plugin": {
-        "Version": "1.0",
-        "Id": "org.deepin.ds.greeter.powertray",
-        "Parent": "org.deepin.ds.greeter.tray",
-        "Url": "Main.qml"
-    }
-}
