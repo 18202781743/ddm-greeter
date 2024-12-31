@@ -1,10 +1,9 @@
-电源管理
-账户管理
+Greeter划分
 
 - greeter插件结构
     - 入口 org.deepin.ds.greeter(Containment)
     - 锁屏主界面 org.deepin.ds.greeter.main(Panel)
-        - 快捷插件管理 org.deepin.ds.greeter.quick(AppletItem, PanelPopup)
+        - 快捷插件管理 org.deepin.ds.greeter.quick(ContainmentItem, PanelPopup)
             - 日期插件 org.deepin.ds.greeter.quick.date(AppletItem)
         - 托盘插件管理 org.deepin.ds.greeter.tray(ContainmentItem)
             - 网络插件 org.deepin.ds.greeter.tray.network(AppletItem, PanelPopup)
@@ -26,21 +25,25 @@
             - 屏幕键盘(2)
             - 键盘布局(1)
             - 用户列表(1)
-        - 用户头像(1)
+        - 用户列表(1)
         - 会话列表(1)
         - 电源界面(1)
     - 壁纸(1)
-    - 锁屏扩展界面
-        - 认证扩展(10)
     - 关机界面(1)
+        - 关机功能(2)
+        - 当前选中功能(1)
+        - 键盘切换(1)
+        - 系统监视器(1)
     - 更新界面(2)
     - 关机阻塞界面(2)
-    - 网络插件(10)
     - 密码认证界面(2)
         - 密码输入
         - 更新提示
         - 修改密码
     - 人脸认证界面(2)
+    - 网络插件(10)
+    - 锁屏扩展界面
+        - 认证扩展(10)
         
 - greeter界面状态
     - 登录(壁纸、主界面)
@@ -77,7 +80,7 @@ GreeterProxy 单例
     屏幕管理
         - 主屏切换(主界面切换)
         - 屏幕壁纸
-    会话管理
+    Session管理
         - 会话列表
         - 会话界面
         - 切换会话
@@ -103,10 +106,10 @@ GreeterProxy 单例
     - 组合认证界面
     - 当前认证类型
     - 实现认证界面，调用认证过程
-    密码认证(AppletItem)(org.deepin.ds.greeter.passwordauth)
-    指纹认证(AppletItem)(org.deepin.ds.greeter.signalauth)
-    人脸认证(AppletItem)(org.deepin.ds.greeter.faceauth)
+    密码认证(AppletItem)(org.deepin.ds.greeter.auth.password)
+    指纹认证(AppletItem)(org.deepin.ds.greeter.auth.signal)
+    人脸认证(AppletItem)(org.deepin.ds.greeter.auth.face)
     
-锁屏扩展插件(Panel)(org.deepin.ds.greeter.one)
+锁屏扩展插件(Panel)(org.deepin.ds.greeter.extension.one)
 
 treeland中dde-shell插件加载器
