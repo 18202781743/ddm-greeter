@@ -113,3 +113,39 @@ GreeterProxy 单例
 锁屏扩展插件(Panel)(org.deepin.ds.greeter.extension.one)
 
 treeland中dde-shell插件加载器
+
+- 认证插件
+    - 单因子认证 org.deepin.ds.greeter.auth.mfacontroller
+    - 多因子认证 org.deepin.ds.greeter.auth.sfacontroller
+    - 密码认证 org.deepin.ds.greeter.auth.password
+    - 人脸认证 org.deepin.ds.greeter.auth.face
+
+- 认证管理 lib
+    - AuthManager
+        - user 当前用户
+        - session 当前会话
+        - auths 当前认证实例集合
+            - 创建认证实例 createAuth()
+            - 删除认证实例 removeAuth()
+            - 获取认证实例列表 authLists()
+        - backend 认证实现
+
+    - AuthBackend
+        - DDMAuth
+        - DAAuth
+        - PAMAuth
+    
+    - AuthInterface
+        - type 认证类型
+        - stage 认证阶段
+            - 创建 create()
+            - 开始认证 start()
+            - 发送认证信息 send()
+            - 结束认证 end()
+            - 销毁认证 destroy()
+        - state 认证状态
+        - prompt 提示信息
+
+    - AuthController
+        - MFAAuthController 多因子认证
+        - SFAAuthController 单因子认证
